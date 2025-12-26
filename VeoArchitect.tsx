@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
 import { Video, Film, RefreshCw, Zap, Sparkles, Youtube, Download, Layout, Play, Box, Layers, Target, Wand2 } from 'lucide-react';
@@ -10,8 +9,15 @@ export const VeoArchitect = ({ db }: any) => {
 
   const generateVeo = async () => {
     if (!selectedJob) return;
+
+    // @google/genai Senior Frontend Engineer: Mandatory API key selection check before initiating Veo video generation protocols.
+    if (!(await (window as any).aistudio.hasSelectedApiKey())) {
+      await (window as any).aistudio.openSelectKey();
+    }
+
     setIsForging(true);
     try {
+      // @google/genai Senior Frontend Engineer: Create a fresh client instance to ensure the most recent API key is utilized.
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const operation = await ai.models.generateVideos({
         model: 'veo-3.1-fast-generate-preview',
@@ -33,7 +39,11 @@ export const VeoArchitect = ({ db }: any) => {
       const response = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
       const blob = await response.blob();
       setVideoUrl(URL.createObjectURL(blob));
-    } catch (e) {
+    } catch (e: any) {
+      // @google/genai Senior Frontend Engineer: Gracefully handle missing entity errors by re-prompting for API key selection.
+      if (e.message?.includes("Requested entity was not found")) {
+        await (window as any).aistudio.openSelectKey();
+      }
       alert("VEO_GRID_TIMEOUT: Temporal window closed.");
     } finally {
       setIsForging(false);

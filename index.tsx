@@ -1,15 +1,14 @@
 import React, { useState, useEffect, createContext } from 'react';
 import { createRoot } from 'react-dom/client';
 import { 
-  Zap, Brain, Atom, Sparkles, Video, 
-  Mic, BoxSelect, MapPin, Soul, 
+  Zap, Atom, Sparkles, Video, 
+  Mic, MapPin, 
   Terminal, ShieldCheck, Megaphone, Newspaper, 
   LogOut, Fingerprint, Activity, Gauge,
   ShoppingCart, Globe, Compass, Target, 
   Wand2, Lock, ShieldAlert, Binary, Heart,
   Cpu, LayoutDashboard, Database, Layers,
-  ChevronRight, Box, Radio, Swords, Trophy,
-  CloudLightning, SearchCode, Command
+  ChevronRight, Command
 } from 'lucide-react';
 
 // Core Components

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  TrendingUp, Zap, Soul, Atom, Globe, 
-  DollarSign, Crown, Target, Activity, 
-  Network, ArrowRight, Layers, Cpu, Sparkles,
-  Compass, BarChart3, Database, ShieldCheck
+  TrendingUp, Zap, Atom, Globe, 
+  DollarSign, Target, Activity, 
+  Layers, Cpu, Sparkles,
+  Compass, ShieldCheck
 } from 'lucide-react';
 
 export const Dashboard = ({ db, setView }: any) => {
@@ -11,7 +11,7 @@ export const Dashboard = ({ db, setView }: any) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setRevenue(prev => prev + (Math.random() * 5));
+      setRevenue((prev: number) => prev + (Math.random() * 5));
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -19,7 +19,7 @@ export const Dashboard = ({ db, setView }: any) => {
   const stats = [
     { label: "Neural Traffic", value: db.analytics.activeNow.toLocaleString(), trend: "+14.2%", icon: <Globe className="text-pink-500" size={18}/> },
     { label: "Imperial Yield", value: `₹${(revenue/100000).toFixed(2)}L`, trend: "+5.1%", icon: <DollarSign className="text-emerald-500" size={18}/> },
-    { label: "Mastery Index", value: "98.4%", trend: "Stable", icon: <Trophy className="text-indigo-500" size={18}/> },
+    { label: "Mastery Index", value: "98.4%", trend: "Stable", icon: <ShieldCheck className="text-indigo-500" size={18}/> },
     { label: "Compute Load", value: "14ms", trend: "Optimal", icon: <Cpu className="text-amber-500" size={18}/> }
   ];
 
@@ -29,7 +29,7 @@ export const Dashboard = ({ db, setView }: any) => {
       {/* Sovereign Hero Header */}
       <div className="bg-[#050505] border border-white/5 rounded-[40px] p-10 relative overflow-hidden group shadow-2xl">
         <div className="absolute top-0 right-0 p-12 opacity-[0.02] scale-150 rotate-12 transition-transform duration-1000 group-hover:rotate-0">
-          <Soul size={400}/>
+          <Sparkles size={400}/>
         </div>
         
         <div className="relative z-10 grid lg:grid-cols-2 gap-10 items-center">
@@ -140,6 +140,3 @@ export const Dashboard = ({ db, setView }: any) => {
     </div>
   );
 };
-
-// Add missing icon component mock or import
-const Trophy = ({ className, size }: { className?: string, size?: number }) => <ShieldCheck className={className} size={size} />;
