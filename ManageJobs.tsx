@@ -1,192 +1,103 @@
 
 import React, { useState } from 'react';
-import { Type } from "@google/genai";
-import { getAiClient } from './index';
 import { 
-  Trash2, Edit3, X, RefreshCw, Plus, 
-  SearchCode, Radar, Zap, Crown, Sparkles, AlertCircle, TrendingUp, Share2, Camera, 
-  Film, Mic, MessageSquare, Target, BarChart, Ghost, Rocket, Smartphone, CheckCircle
+  Plus, Search, Edit3, Trash2, Globe, ArrowRight, 
+  CheckCircle, Zap, RefreshCw, X, ShieldCheck 
 } from 'lucide-react';
 
-export const ManageJobs = ({ db, updateDB }: any) => {
-  const [editingId, setEditingId] = useState<string | null>(null);
+export const ManageJobs = ({ db, updateDB, type, title }: any) => {
   const [isAdding, setIsAdding] = useState(false);
   const [editForm, setEditForm] = useState<any>(null);
-  const [urlInput, setUrlInput] = useState('');
-  const [isAiLoading, setIsAiLoading] = useState(false);
+
+  const list = db[type] || [];
 
   const initialForm = {
-    id: `j_${Date.now()}`,
+    id: Date.now(),
     title: '',
-    title_te: '',
     org: '',
-    qualification: '',
     lastDate: '',
-    section: 'govt',
     summary: '',
-    stepByStep: '',
-    metaKeywords: '',
-    neatnessScore: 100,
+    link: '',
     thumbnail: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1000'
   };
 
-  const handleNeuralForge = async () => {
-    if (!urlInput) return;
-    setIsAiLoading(true);
-    try {
-      const ai = getAiClient();
-      const prompt = `Analyze this job announcement URL: ${urlInput}. 
-      Generate:
-      1. title: English short title
-      2. title_te: Telugu short title
-      3. org: Organization name
-      4. summary: Professional 2-sentence summary in English.
-      5. lastDate: Extract last date (DD/MM/YYYY)
-      Return STRICT JSON.`;
-
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: prompt,
-        config: { 
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              title: { type: Type.STRING },
-              title_te: { type: Type.STRING },
-              org: { type: Type.STRING },
-              summary: { type: Type.STRING },
-              lastDate: { type: Type.STRING }
-            }
-          }
-        }
-      });
-      
-      const res = JSON.parse(response.text);
-      setEditForm({ ...initialForm, ...res });
-      setIsAdding(true);
-      setUrlInput('');
-    } catch (e) {
-      alert("AI Sync Error. Try with a different link or check your API keys.");
-    } finally {
-      setIsAiLoading(false);
-    }
-  };
-
-  const commitToRegistry = () => {
-    if (isAdding) {
-      updateDB((p: any) => ({ ...p, jobs: [editForm, ...p.jobs] }));
-      setIsAdding(false);
-    } else {
-      updateDB((p: any) => ({ ...p, jobs: p.jobs.map((j: any) => j.id === editingId ? editForm : j) }));
-      setEditingId(null);
-    }
+  const handleCommit = () => {
+    updateDB((prev: any) => ({
+      ...prev,
+      [type]: [editForm, ...prev[type].filter((item: any) => item.id !== editForm.id)]
+    }));
+    setIsAdding(false);
     setEditForm(null);
   };
 
-  return (
-    <div className="space-y-20 animate-in fade-in duration-1000 pb-64">
-      {/* COMMAND INPUT */}
-      <div className="bg-[#050505] border border-emerald-500/30 p-16 md:p-24 rounded-[80px] space-y-20 shadow-4xl relative overflow-hidden group">
-         <div className="absolute top-0 right-0 p-16 opacity-5 rotate-12 transition-transform duration-1000 group-hover:rotate-0"><Rocket size={500} className="text-emerald-500"/></div>
-         <div className="flex flex-col xl:flex-row justify-between items-center gap-12 relative z-10">
-            <div className="space-y-6 text-center xl:text-left">
-               <h2 className="text-7xl md:text-9xl font-black tracking-tighter text-white uppercase italic leading-none">POST <span className="text-emerald-500 block">FORGE.</span></h2>
-               <p className="text-[14px] font-black uppercase text-slate-700 tracking-[0.8em] italic">AI Accelerated Content Generation</p>
-            </div>
-            <button onClick={() => { setEditForm(initialForm); setIsAdding(true); }} className="bg-emerald-600 text-white px-20 py-10 rounded-full font-black uppercase text-[15px] tracking-widest hover:bg-white hover:text-black transition-all shadow-4xl active:scale-95 group/btn flex items-center gap-6">
-               <Plus className="group-hover/btn:rotate-90 transition-transform" size={32}/> MANUAL ENTRY
-            </button>
-         </div>
+  const deleteItem = (id: any) => {
+    updateDB((prev: any) => ({
+      ...prev,
+      [type]: prev[type].filter((item: any) => item.id !== id)
+    }));
+  };
 
-         <div className="relative z-10 bg-black border border-white/5 rounded-[60px] p-6 flex items-center shadow-inner focus-within:border-emerald-600 transition-all">
-            <SearchCode className="text-slate-800 ml-12" size={48}/>
-            <input 
-              className="bg-transparent w-full px-10 py-8 outline-none font-black text-2xl md:text-4xl placeholder:text-slate-900 text-emerald-500 italic"
-              placeholder="Paste Job Link for AI Auto-Fill..."
-              value={urlInput}
-              onChange={e => setUrlInput(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && handleNeuralForge()}
-            />
-            <button onClick={handleNeuralForge} disabled={isAiLoading || !urlInput} className="bg-cyan-600 text-white px-16 py-8 md:px-24 md:py-10 rounded-[48px] font-black uppercase text-[12px] tracking-widest hover:bg-white hover:text-cyan-600 transition-all shadow-4xl flex items-center gap-8">
-               {isAiLoading ? <RefreshCw className="animate-spin" size={28}/> : <Zap size={28}/>} {isAiLoading ? 'FORGING...' : 'AI FORGE'}
-            </button>
-         </div>
+  return (
+    <div className="space-y-16 animate-in fade-in duration-700 pb-32">
+      
+      {/* HEADER NODE */}
+      <div className="bg-[#050505] border border-white/5 p-12 rounded-[50px] flex flex-col md:flex-row justify-between items-center gap-10 shadow-xl">
+        <div className="space-y-2 text-center md:text-left">
+          <h2 className="text-5xl font-black italic text-white uppercase tracking-tighter leading-none">{title}<span className="text-emerald-500">.</span></h2>
+          <p className="text-[9px] font-black text-slate-800 uppercase tracking-widest italic">Global Node Registry Management</p>
+        </div>
+        <button onClick={() => { setEditForm(initialForm); setIsAdding(true); }} className="bg-emerald-600 text-white px-12 py-5 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition-all shadow-xl flex items-center gap-4">
+          <Plus size={18}/> New Entry
+        </button>
       </div>
 
-      {/* REGISTRY NODES */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12">
-        {db.jobs.map((j: any) => (
-          <div key={j.id} className="bg-[#050505] border border-white/5 rounded-[80px] p-12 hover:border-emerald-500/50 transition-all group shadow-4xl flex flex-col relative h-[700px] justify-between overflow-hidden">
-             <div className="h-64 relative overflow-hidden rounded-[56px] border border-white/5 shadow-inner">
-                <img src={j.thumbnail} className="w-full h-full object-cover grayscale opacity-20 group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" />
-                <div className="absolute top-8 left-8 bg-black/70 backdrop-blur px-6 py-2 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/10">{j.section}</div>
+      {/* REGISTRY NODES GRID */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {list.map((item: any) => (
+          <div key={item.id} className="bg-[#050505] border border-white/5 rounded-[40px] overflow-hidden group hover:border-emerald-500/40 transition-all shadow-lg flex flex-col">
+             <div className="h-48 relative overflow-hidden bg-slate-900 flex items-center justify-center">
+                <img src={item.thumbnail} className="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-1000" />
+                <div className="absolute bottom-5 left-5 bg-black/60 px-4 py-1 rounded-full border border-white/10 text-[8px] font-black text-emerald-500 uppercase tracking-widest">{item.org}</div>
              </div>
-             <div className="flex-1 space-y-8 pt-12">
-                <h4 className="text-4xl font-black text-white italic uppercase leading-none line-clamp-2 group-hover:text-emerald-400 transition-colors tracking-tighter">{j.title}</h4>
-                <p className="text-[13px] font-black text-slate-700 uppercase tracking-widest leading-relaxed line-clamp-3 italic opacity-60">"{j.summary}"</p>
-             </div>
-             <div className="pt-10 border-t border-white/5 flex flex-col gap-8">
-                <div className="flex justify-between items-center">
-                   <div className="flex gap-6">
-                      <button onClick={() => {setEditingId(j.id); setEditForm({...j});}} className="p-6 bg-white/5 rounded-[32px] hover:bg-emerald-600 hover:text-white transition-all shadow-xl group/icon border border-white/5"><Edit3 size={24}/></button>
-                      <button onClick={() => updateDB((p:any)=>({...p, jobs: p.jobs.filter((x:any)=>x.id!==j.id)}))} className="p-6 bg-red-500/10 text-red-500 rounded-[32px] border border-red-500/20 hover:bg-red-500 hover:text-white transition-all shadow-xl"><Trash2 size={24}/></button>
+             <div className="p-8 space-y-6 flex-1 flex flex-col">
+                <h4 className="text-xl font-black text-white italic uppercase tracking-tighter leading-tight group-hover:text-emerald-500 transition-colors line-clamp-2">{item.title}</h4>
+                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                   <div className="flex gap-4">
+                      <button onClick={() => { setEditForm(item); setIsAdding(true); }} className="p-3 bg-white/5 rounded-2xl hover:bg-emerald-600 hover:text-white transition-all"><Edit3 size={16}/></button>
+                      <button onClick={() => deleteItem(item.id)} className="p-3 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all"><Trash2 size={16}/></button>
                    </div>
-                   <div className="flex items-center gap-4 text-emerald-500">
-                      <CheckCircle size={18}/> <span className="text-[11px] font-black uppercase tracking-[0.2em]">OPERATIONAL</span>
+                   <div className="flex items-center gap-2 text-[8px] font-black text-slate-700 uppercase tracking-widest">
+                      <CheckCircle size={14} className="text-emerald-500"/> Live
                    </div>
                 </div>
              </div>
           </div>
         ))}
+        {list.length === 0 && (
+          <div className="col-span-full h-64 border border-dashed border-white/5 rounded-[40px] flex items-center justify-center opacity-20 italic font-black uppercase tracking-widest">
+             No Nodes Registered.
+          </div>
+        )}
       </div>
 
       {/* SYNTHESIS MODAL */}
-      {(editingId || isAdding) && (
-        <div className="fixed inset-0 z-[2000] bg-black/99 backdrop-blur-5xl flex items-center justify-center p-12 overflow-y-auto">
-          <div className="bg-[#050505] border border-white/10 rounded-[100px] w-full max-w-[1400px] p-24 space-y-20 animate-in zoom-in-95 duration-700 relative my-auto shadow-4xl overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-emerald-600"></div>
-            <div className="flex justify-between items-center">
-              <h3 className="text-8xl font-black italic uppercase tracking-tighter text-white leading-none">CONTENT <span className="text-emerald-500 block">FORGE.</span></h3>
-              <button onClick={() => { setEditingId(null); setIsAdding(false); setEditForm(null); }} className="p-10 bg-white/5 rounded-full hover:bg-red-600 transition-all border border-white/5 shadow-4xl"><X size={48}/></button>
-            </div>
-            
-            <div className="grid lg:grid-cols-12 gap-20 overflow-y-auto max-h-[60vh] pr-10 scrollbar-hide pb-16">
-              <div className="lg:col-span-8 space-y-12">
-                 <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] px-10 italic">English Label</label>
-                    <input className="w-full bg-black border border-white/5 rounded-full px-14 py-10 text-4xl font-black text-white outline-none focus:border-emerald-600 shadow-inner italic" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} />
-                 </div>
-                 <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] px-10 italic">Telugu Label</label>
-                    <input className="w-full bg-black border border-white/5 rounded-full px-14 py-10 text-4xl font-black text-emerald-500 outline-none focus:border-emerald-600 shadow-inner italic" value={editForm.title_te} onChange={e => setEditForm({...editForm, title_te: e.target.value})} />
-                 </div>
-                 <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] px-10 italic">Neural Narrative</label>
-                    <textarea className="w-full bg-black border border-white/5 rounded-[80px] p-16 text-slate-500 font-bold text-3xl min-h-[400px] outline-none italic leading-relaxed" value={editForm.summary} onChange={e => setEditForm({...editForm, summary: e.target.value})} />
-                 </div>
-              </div>
-              <div className="lg:col-span-4 space-y-12">
-                 <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] px-10 italic">Registry Deadline</label>
-                    <input className="w-full bg-black border border-white/5 rounded-full px-12 py-8 text-white font-black text-3xl italic" value={editForm.lastDate} onChange={e => setEditForm({...editForm, lastDate: e.target.value})} />
-                 </div>
-                 <div className="space-y-4">
-                    <label className="text-[10px] font-black text-slate-800 uppercase tracking-[0.5em] px-10 italic">Asset URI</label>
-                    <input className="w-full bg-black border border-white/5 rounded-full px-12 py-8 text-xs text-slate-800 font-mono" value={editForm.thumbnail} onChange={e => setEditForm({...editForm, thumbnail: e.target.value})} />
-                 </div>
-                 <div className="bg-emerald-600/5 border border-emerald-500/20 p-12 rounded-[64px] space-y-6">
-                    <h5 className="text-[10px] font-black text-emerald-500 uppercase tracking-[0.3em]">Node Metadata</h5>
-                    <p className="text-sm font-bold text-slate-600 italic">This asset will be broadcast to all connected student nodes globally once committed.</p>
-                 </div>
-              </div>
-            </div>
-
-            <div className="pt-12 border-t border-white/5">
-                <button onClick={commitToRegistry} className="w-full bg-emerald-600 py-14 rounded-[70px] font-black uppercase tracking-[0.8em] text-[20px] shadow-4xl hover:bg-white hover:text-black transition-all group italic active:scale-95">
-                    COMMIT CHANGES TO GLOBAL REGISTRY
-                </button>
-            </div>
+      {isAdding && (
+        <div className="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-xl flex items-center justify-center p-10 overflow-y-auto">
+          <div className="bg-[#050505] border border-white/10 rounded-[60px] w-full max-w-2xl p-16 space-y-12 animate-in zoom-in-95 duration-500 relative">
+             <div className="flex justify-between items-center">
+               <h3 className="text-5xl font-black italic uppercase tracking-tighter text-white leading-none">NODE <span className="text-emerald-500">FORGE.</span></h3>
+               <button onClick={() => setIsAdding(false)} className="p-4 hover:bg-red-500/20 rounded-full transition-all text-red-500"><X size={32}/></button>
+             </div>
+             <div className="space-y-8">
+                <input className="w-full bg-black border border-white/10 rounded-[30px] px-8 py-5 text-white font-black text-xl outline-none focus:border-emerald-600 transition-all italic" value={editForm.title} onChange={e => setEditForm({...editForm, title: e.target.value})} placeholder="Title Label" />
+                <div className="grid grid-cols-2 gap-6">
+                   <input className="w-full bg-black border border-white/10 rounded-[30px] px-8 py-5 text-white font-black italic" value={editForm.org} onChange={e => setEditForm({...editForm, org: e.target.value})} placeholder="Organization/Company" />
+                   <input className="w-full bg-black border border-white/10 rounded-[30px] px-8 py-5 text-white font-black italic" value={editForm.lastDate} onChange={e => setEditForm({...editForm, lastDate: e.target.value})} placeholder="Deadline/Event Date" />
+                </div>
+                <textarea className="w-full bg-black border border-white/10 rounded-[30px] p-8 text-slate-500 font-bold text-lg min-h-[150px] outline-none italic" value={editForm.summary} onChange={e => setEditForm({...editForm, summary: e.target.value})} placeholder="Summary Data..." />
+                <input className="w-full bg-black border border-white/10 rounded-[30px] px-8 py-5 text-slate-700 font-mono text-xs" value={editForm.thumbnail} onChange={e => setEditForm({...editForm, thumbnail: e.target.value})} placeholder="Thumbnail Asset URI" />
+                <button onClick={handleCommit} className="w-full bg-emerald-600 py-8 rounded-[40px] font-black uppercase tracking-[0.6em] text-[15px] shadow-xl hover:bg-white hover:text-black transition-all italic">COMMIT TO GLOBAL MESH</button>
+             </div>
           </div>
         </div>
       )}
