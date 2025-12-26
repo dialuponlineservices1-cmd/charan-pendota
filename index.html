@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dialup - V1700 TITAN</title>
+    <title>Student Dialup - Empire V1800</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              emerald: { 400: '#34d399', 500: '#10b981', 600: '#059669' },
+              emerald: { 500: '#10b981', 600: '#059669' },
               obsidian: '#020202',
-              slate: { 900: '#0f172a', 950: '#020617' }
+              dark: '#080808'
             }
           }
         }
@@ -36,15 +36,16 @@
       @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap');
       body { 
         font-family: 'Plus Jakarta Sans', sans-serif; 
-        background: #020202; 
+        background-color: #020202; 
         color: white;
         margin: 0;
+        overflow-x: hidden;
       }
       .scrollbar-hide::-webkit-scrollbar { display: none; }
-      #root { min-height: 100vh; display: flex; flex-direction: column; }
+      #root { min-height: 100vh; }
     </style>
 </head>
-<body class="bg-obsidian overflow-x-hidden">
+<body class="bg-obsidian">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>
