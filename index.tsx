@@ -8,7 +8,8 @@ import {
   ShoppingCart, Globe, Compass, Target, 
   Wand2, Lock, ShieldAlert, Binary, Heart,
   Cpu, LayoutDashboard, Database, Layers,
-  ChevronRight, Command
+  ChevronRight, Command, Boxes, Brain,
+  Trophy, SearchCode, Radio, Ghost
 } from 'lucide-react';
 
 // Core Components
@@ -92,103 +93,133 @@ const App = () => {
   if (!isAuthenticated) return <BioScanLogin adminKey={db.contactInfo.adminKey} onAuthSuccess={() => setIsAuthenticated(true)} />;
 
   const menuGroups = [
-    { label: 'Intelligence Hub', items: [
-      { id: 'dashboard', label: 'Command Center', icon: <LayoutDashboard size={18}/> },
-      { id: 'strategy', label: 'Victory Blueprint', icon: <Compass size={18}/> },
-      { id: 'warper', label: 'Reality Warp', icon: <Atom size={18}/> },
-      { id: 'sentinel', label: 'Neural Watch', icon: <ShieldCheck size={18}/> },
-    ]},
-    { label: 'Creative Forge', items: [
-      { id: 'magic-editor', label: 'Ascension Forge', icon: <Wand2 size={18}/> },
-      { id: 'factory', label: 'Omni Factory', icon: <Cpu size={18}/> },
-      { id: 'veo', label: 'Veo Cinema', icon: <Video size={18}/> },
-      { id: 'gazette', label: 'Gazette Alchemy', icon: <Newspaper size={18}/> },
-      { id: 'podcast', label: 'Podcast Forge', icon: <Mic size={18}/> },
-    ]},
-    { label: 'Market & Yield', items: [
-      { id: 'promotions', label: 'Ad Matrix', icon: <Megaphone size={18}/> },
-      { id: 'affiliates', label: 'Synergy Hub', icon: <ShoppingCart size={18}/> },
-      { id: 'yield', label: 'Yield Predict', icon: <Activity size={18}/> },
-      { id: 'monetize', label: 'Profit Oracle', icon: <Target size={18}/> },
-    ]},
-    { label: 'Security & Ops', items: [
-      { id: 'gateway', label: 'API Firewall', icon: <Lock size={18}/> },
-      { id: 'matrix', label: 'Threat Radar', icon: <ShieldAlert size={18}/> },
-      { id: 'defrag', label: 'Lattice Clean', icon: <Binary size={18}/> },
-      { id: 'biometry', label: 'Bio Telemetry', icon: <Fingerprint size={18}/> },
-    ]}
+    { 
+      label: 'Intelligence', 
+      color: 'text-indigo-500', 
+      bg: 'hover:bg-indigo-500/10',
+      active: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
+      items: [
+        { id: 'dashboard', label: 'Command Hub', icon: <LayoutDashboard size={18}/> },
+        { id: 'strategy', label: 'Victory Logic', icon: <Compass size={18}/> },
+        { id: 'warper', label: 'Reality Drift', icon: <Ghost size={18}/> },
+        { id: 'sentinel', label: 'System Watch', icon: <ShieldCheck size={18}/> },
+      ]
+    },
+    { 
+      label: 'Creative', 
+      color: 'text-amber-500',
+      bg: 'hover:bg-amber-500/10',
+      active: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+      items: [
+        { id: 'magic-editor', label: 'Ascension Forge', icon: <Wand2 size={18}/> },
+        { id: 'factory', label: 'Omni Plant', icon: <Cpu size={18}/> },
+        { id: 'veo', label: 'Veo Cinema', icon: <Video size={18}/> },
+        { id: 'gazette', label: 'Data Alchemy', icon: <Binary size={18}/> },
+        { id: 'podcast', label: 'Voice Forge', icon: <Mic size={18}/> },
+      ]
+    },
+    { 
+      label: 'Marketplace', 
+      color: 'text-emerald-500',
+      bg: 'hover:bg-emerald-500/10',
+      active: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+      items: [
+        { id: 'promotions', label: 'Ad Injection', icon: <Megaphone size={18}/> },
+        { id: 'affiliates', label: 'Synergy Hub', icon: <ShoppingCart size={18}/> },
+        { id: 'yield', label: 'Profit Predict', icon: <Target size={18}/> },
+        { id: 'monetize', label: 'Revenue Oracle', icon: <Trophy size={18}/> },
+      ]
+    },
+    { 
+      label: 'Security', 
+      color: 'text-rose-500',
+      bg: 'hover:bg-rose-500/10',
+      active: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
+      items: [
+        { id: 'gateway', label: 'Key Shield', icon: <Lock size={18}/> },
+        { id: 'matrix', label: 'Threat Radar', icon: <ShieldAlert size={18}/> },
+        { id: 'defrag', label: 'Lattice Clean', icon: <Zap size={18}/> },
+        { id: 'biometry', label: 'Bio Registry', icon: <Fingerprint size={18}/> },
+      ]
+    }
   ];
 
   return (
     <LangContext.Provider value={{lang, setLang}}>
       <div className="min-h-screen bg-[#020202] text-slate-300 flex overflow-hidden font-sans">
-        {/* Advanced Ultra-Clean Sidebar */}
-        <aside className="w-[280px] h-screen bg-black border-r border-white/5 flex flex-col z-[100] shrink-0">
-          <div className="h-20 flex items-center px-8 border-b border-white/5 gap-4">
-            <div className="w-10 h-10 bg-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-pink-600/20">
-              <Command size={20} className="text-black"/>
+        
+        {/* Zenith Ultra Sidebar */}
+        <aside className="w-[300px] h-screen bg-black border-r border-white/5 flex flex-col z-[100] shrink-0">
+          <div className="h-24 flex items-center px-10 border-b border-white/5 gap-5">
+            <div className="w-12 h-12 bg-pink-600 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(236,72,153,0.3)]">
+              <Command size={24} className="text-black"/>
             </div>
             <div className="flex flex-col">
-              <span className="font-black text-lg text-white tracking-tighter uppercase italic leading-none">AETHEL_ADMIN</span>
-              <span className="text-[8px] font-bold text-slate-600 uppercase tracking-widest mt-1">VER 3.0.4.821</span>
+              <span className="font-black text-2xl text-white tracking-tighter uppercase italic leading-none">AETHEL_V30</span>
+              <span className="text-[9px] font-bold text-slate-600 uppercase tracking-widest mt-1">Sovereign Admin Unit</span>
             </div>
           </div>
           
-          <nav className="flex-1 overflow-y-auto p-4 space-y-8 scrollbar-hide">
+          <nav className="flex-1 overflow-y-auto p-6 space-y-10 scrollbar-hide">
             {menuGroups.map((group) => (
-              <div key={group.label} className="space-y-1">
-                <p className="px-4 text-[10px] font-bold text-slate-700 uppercase tracking-[0.3em] mb-3">{group.label}</p>
-                {group.items.map((item) => (
-                  <button 
-                    key={item.id} 
-                    onClick={() => setView(item.id)} 
-                    className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-300 group ${view === item.id ? 'bg-pink-600/10 text-pink-500 border border-pink-500/20 shadow-lg shadow-pink-600/5' : 'text-slate-500 hover:bg-white/5 hover:text-white border border-transparent'}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className={`transition-colors ${view === item.id ? 'text-pink-500' : 'text-slate-700 group-hover:text-white'}`}>{item.icon}</span>
-                      <span className="text-xs font-bold uppercase tracking-wide">{item.label}</span>
-                    </div>
-                    {view === item.id && <div className="w-1 h-1 bg-pink-500 rounded-full animate-pulse"></div>}
-                  </button>
-                ))}
+              <div key={group.label} className="space-y-2">
+                <p className={`px-4 text-[10px] font-black uppercase tracking-[0.3em] mb-4 ${group.color}`}>{group.label}</p>
+                <div className="space-y-1">
+                  {group.items.map((item) => {
+                    const isActive = view === item.id;
+                    return (
+                      <button 
+                        key={item.id} 
+                        onClick={() => setView(item.id)} 
+                        className={`w-full flex items-center justify-between px-5 py-3 rounded-2xl transition-all duration-300 border border-transparent ${isActive ? group.active : `text-slate-500 ${group.bg} hover:text-white`}`}
+                      >
+                        <div className="flex items-center gap-4">
+                          <span className={`${isActive ? group.color : 'text-slate-700'}`}>{item.icon}</span>
+                          <span className="text-xs font-black uppercase tracking-wide">{item.label}</span>
+                        </div>
+                        {isActive && <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${group.color.replace('text', 'bg')}`}></div>}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             ))}
           </nav>
           
-          <div className="p-4 border-t border-white/5 bg-white/[0.01]">
-             <button onClick={() => setIsAdminMode(false)} className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-red-600/5 text-red-500 hover:bg-red-600 hover:text-white transition-all font-black uppercase text-[10px] border border-red-500/10 shadow-lg">
-               <LogOut size={14}/> TERMINATE SYNC
+          <div className="p-6 border-t border-white/5 bg-white/[0.01]">
+             <button onClick={() => setIsAdminMode(false)} className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-[20px] bg-rose-600/5 text-rose-500 hover:bg-rose-600 hover:text-white transition-all font-black uppercase text-[10px] border border-rose-500/10">
+               <LogOut size={16}/> Terminate Link
              </button>
           </div>
         </aside>
 
-        {/* Main Command Workspace */}
-        <main className="flex-1 flex flex-col h-screen overflow-hidden">
-          <header className="h-20 bg-black/40 backdrop-blur-3xl border-b border-white/5 px-10 flex items-center justify-between z-50">
-             <div className="flex items-center gap-5">
+        {/* Main Command Center */}
+        <main className="flex-1 flex flex-col h-screen overflow-hidden bg-[#020202]">
+          <header className="h-24 bg-black/40 backdrop-blur-3xl border-b border-white/5 px-12 flex items-center justify-between z-50">
+             <div className="flex items-center gap-6">
                 <div className="relative">
-                  <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-ping absolute inset-0"></div>
-                  <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full relative shadow-[0_0_10px_#10b981]"></div>
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full animate-ping absolute inset-0"></div>
+                  <div className="w-3 h-3 bg-emerald-500 rounded-full relative shadow-[0_0_15px_#10b981]"></div>
                 </div>
                 <div className="flex flex-col">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-white italic">Node Status: <span className="text-pink-500">Online</span></h2>
-                  <p className="text-[9px] font-bold text-slate-700 uppercase tracking-widest mt-0.5">{view.replace('-', ' ')} protocol active</p>
+                  <h2 className="text-xs font-black uppercase tracking-[0.4em] text-white italic">Protocol: <span className="text-pink-500">{view.toUpperCase().replace('-', '_')}</span></h2>
+                  <p className="text-[10px] font-bold text-slate-700 uppercase tracking-widest mt-1">Status: All Nodes Synchronized</p>
                 </div>
              </div>
-             <div className="flex items-center gap-4">
-                <div className="hidden lg:flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full text-[9px] font-black text-slate-400 uppercase border border-white/5">
-                   <Activity size={12} className="text-pink-500"/> System Health: <span className="text-emerald-500">Optimal</span>
+             <div className="flex items-center gap-6">
+                <div className="hidden lg:flex items-center gap-4 px-6 py-2.5 bg-white/5 rounded-2xl text-[10px] font-black text-slate-500 uppercase border border-white/5">
+                   <Gauge size={14} className="text-pink-500"/> Neural Load: <span className="text-white ml-1">12.4%</span>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-600 to-indigo-600 p-[1px]">
-                  <div className="w-full h-full bg-black rounded-[11px] flex items-center justify-center">
-                    <Fingerprint size={16} className="text-white"/>
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 via-pink-600 to-amber-500 p-[1px] shadow-xl">
+                  <div className="w-full h-full bg-black rounded-[15px] flex items-center justify-center">
+                    <Fingerprint size={22} className="text-white"/>
                   </div>
                 </div>
              </div>
           </header>
 
-          <div className="flex-1 overflow-y-auto p-10 xl:p-14 scrollbar-hide bg-[#020202]">
-              <div className="max-w-7xl mx-auto space-y-10">
+          <div className="flex-1 overflow-y-auto p-12 xl:p-20 scrollbar-hide">
+              <div className="max-w-7xl mx-auto space-y-16">
                 {view === 'dashboard' && <Dashboard db={db} setView={setView} />}
                 {view === 'strategy' && <StrategyArchitect db={db} lang={lang} />}
                 {view === 'warper' && <RealityWarper db={db} />}
