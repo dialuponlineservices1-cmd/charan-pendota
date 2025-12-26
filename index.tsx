@@ -1,58 +1,74 @@
-
 import React, { useState, useEffect, createContext } from 'react';
 import { createRoot } from 'react-dom/client';
 import { 
-  Activity, Briefcase, GraduationCap, Ticket, FileText, 
-  Sparkles, Newspaper, MapPin, Zap, Cpu, Settings, 
-  LogOut, UserCircle, Hexagon, ShieldCheck, Megaphone, 
-  ShoppingBag, FolderLock, MessageSquare, Flame, Swords, Ghost,
-  Compass, Target, Radio, Layers, Terminal, Rocket, DollarSign, Languages, Scale,
-  Radar, BarChart3, TrendingUp, Trophy, ScanFace, Brain, Mic, Globe, Crown, Headphones,
-  Eye, ZapOff, HardDrive, LineChart, Shield, Box, Share2, Server, Key, Activity as PulseIcon,
-  ShieldAlert, Database, FileOutput, Wind, EyeOff, Timer, Send, Layout, Wrench, Zap as Bolt,
-  Fingerprint, Eye as EyeIcon, Binary, Waves, Gauge, PieChart, Heart, Satellite, BarChart,
-  Sword, Wand2, TrendingDown, Landmark, FolderSync, BookOpenCheck, History, ExternalLink,
-  ChevronDown, Search, Filter, Lock, Download, ChevronRight, PlayCircle, Infinity,
-  Medal, Star, BarChart4, TrendingUp as TrendUp, Zap as Lightning, ShieldAlert as Alert, 
-  Waves as Flux, Gem, BookOpen, Flag, Mic2, Map, ShieldPlus, ShoppingCart, Volume2, Film,
-  Crosshair, BarChartHorizontal, Video, UserPlus, Share, Smartphone, Presentation, Dna, 
-  Newspaper as NewsIcon, MicOff, BoxSelect, Network, Zap as BoltIcon, SearchCode, Camera,
-  Boxes, Orbit, Atom, FastForward, Scan, AlertTriangle, Cubes, Ghost as Soul, Lightbulb
+  Zap, Brain, Atom, Cubes, Sparkles, Radar, Video, 
+  Mic, BoxSelect, SearchCode, MapPin, Soul, Boxes, 
+  Terminal, ShieldCheck, Megaphone, Newspaper, Layout,
+  Crown, LogOut, Smartphone, Fingerprint, Activity, Gauge,
+  Database, ShoppingCart, Globe, Compass, Target, Sword,
+  Wand2, FileText, Cpu, Lock, ShieldAlert, Binary, Heart,
+  Trophy, Layers, Search
 } from 'lucide-react';
 
+// Core Components
 import { Dashboard } from './Dashboard';
 import { PublicPortal } from './PublicPortal';
-import { MagicEditor } from './MagicEditor';
-import { NeuralSentinel } from './NeuralSentinel';
-import { ImperialPulse } from './ImperialPulse';
-import { ImperialOracle } from './ImperialOracle';
-import { AetherAvatar } from './AetherAvatar';
-import { SovereignVoice } from './SovereignVoice';
-import { NeuroLobby } from './NeuroLobby';
-import { DarkMatterScraper } from './DarkMatterScraper';
-import { OmniFactory } from './OmniFactory';
-import { VeoArchitect } from './VeoArchitect';
-import { CutoffPredictor } from './CutoffPredictor';
-import { HyperspaceTraffic } from './HyperspaceTraffic';
 import { BioScanLogin } from './BioScanLogin';
+import { NeuralSentinel } from './NeuralSentinel';
+
+// Admin Strategy & Intelligence
 import { SentientBot } from './SentientBot';
 import { RealityWarper } from './RealityWarper';
 import { MindPalace } from './MindPalace';
-import { HolographicYield } from './HolographicYield';
-import { QuantumForesight } from './QuantumForesight';
+import { StrategyArchitect } from './StrategyArchitect';
+import { ImperialOracle } from './ImperialOracle';
 
-const DB_KEY = 'aethegard_v3000_omniscience';
+// Content Forge & Automation
+import { MagicEditor } from './MagicEditor';
+import { OmniFactory } from './OmniFactory';
+import { VeoArchitect } from './VeoArchitect';
+import { GazetteAlchemist } from './GazetteAlchemist';
+import { PodcastForge } from './PodcastForge';
+import { PDFAlchemist } from './PDFAlchemist';
+import { PrintForge } from './PrintForge';
+
+// Revenue & Business Nodes
+import { PromotionsManager } from './PromotionsManager';
+import { AffiliateManager } from './AffiliateManager';
+import { YieldForecaster } from './YieldForecaster';
+import { MonetizationOracle } from './MonetizationOracle';
+import { AdCluster } from './AdCluster';
+
+// Telemetry & Global Pulse
+import { ImperialPulse } from './ImperialPulse';
+import { GlobalNexus } from './GlobalNexus';
+import { HyperspaceTraffic } from './HyperspaceTraffic';
+import { WorkforceSimulator } from './WorkforceSimulator';
+import { AetherSentiment } from './AetherSentiment';
+
+// Security & Infrastructure
+import { ThreatMatrix } from './ThreatMatrix';
+import { AegisSecurity } from './AegisSecurity';
+import { APIGateway } from './APIGateway';
+import { NeuralDefrag } from './NeuralDefrag';
+import { BioTelemetry } from './BioTelemetry';
+
+const DB_KEY = 'studentdialup_v3000_core';
 export const LangContext = createContext<{lang: 'en' | 'te', setLang: (l: 'en' | 'te') => void}>({lang: 'en', setLang: () => {}});
 
 const getInitialDB = () => {
-  const data = localStorage.getItem(DB_KEY);
-  if (data) return JSON.parse(data);
+  try {
+    const data = localStorage.getItem(DB_KEY);
+    if (data) return JSON.parse(data);
+  } catch (e) { console.error("DB Corrupted, resetting..."); }
+  
   return { 
     jobs: [], 
     exams: [],
     promotions: [],
     affiliates: [],
-    analytics: { activeNow: 42405000, revenue: 985400000000 }, 
+    leaderboard: [],
+    analytics: { activeNow: 42405000, revenue: 985400000000, serviceApplications: 120, storeSales: 450 }, 
     contactInfo: { whatsapp: "9100000000", adminKey: "0000" }
   };
 };
@@ -66,95 +82,137 @@ const App = () => {
   const [isBooting, setIsBooting] = useState(true);
 
   useEffect(() => { localStorage.setItem(DB_KEY, JSON.stringify(db)); }, [db]);
-  useEffect(() => { setTimeout(() => setIsBooting(false), 3000); }, []);
+  useEffect(() => { setTimeout(() => setIsBooting(false), 2000); }, []);
 
   const updateDB = (updater: (prev: any) => any) => setDb((prev: any) => updater(prev));
 
   if (isBooting) return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-10 overflow-hidden relative">
-       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#f472b6_0%,_transparent_70%)] opacity-20 animate-pulse"></div>
-       <div className="relative">
-         <Atom size={600} className="text-pink-500 animate-spin-slow opacity-10"/>
-         <Soul size={220} className="text-pink-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse shadow-[0_0_500px_pink]"/>
-       </div>
-       <h2 className="text-[350px] font-black italic tracking-tighter text-white leading-none mt-12">V3000<span className="text-pink-500">.GOD</span></h2>
-       <p className="text-[32px] font-black text-white/40 uppercase tracking-[4em] animate-pulse italic">OMNISCIENCE_PROTOCOL_LIVE</p>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-10 overflow-hidden">
+       <Atom size={400} className="text-pink-500 animate-spin-slow opacity-20 absolute"/>
+       <h2 className="text-[120px] font-black italic tracking-tighter text-white leading-none z-10">V3000<span className="text-pink-500">.GOD</span></h2>
+       <p className="text-xl font-black text-white/40 uppercase tracking-[1.5em] animate-pulse italic mt-4 z-10">OMNISCIENCE_PROTOCOL_LOADING</p>
     </div>
   );
 
-  if (!isAdminMode) return <LangContext.Provider value={{lang, setLang}}><PublicPortal db={db} setAdminMode={() => setIsAdminMode(true)} updateDB={updateDB} /></LangContext.Provider>;
+  if (!isAdminMode) return (
+    <LangContext.Provider value={{lang, setLang}}>
+      <PublicPortal db={db} setAdminMode={() => setIsAdminMode(true)} updateDB={updateDB} />
+    </LangContext.Provider>
+  );
 
   if (!isAuthenticated) return <BioScanLogin adminKey={db.contactInfo.adminKey} onAuthSuccess={() => setIsAuthenticated(true)} />;
 
-  const menu = [
-    { label: 'OMNISCIENT_NODES', items: [
-      { id: 'dashboard', label: 'Prime Godhead', icon: <Soul size={32}/> },
-      { id: 'bot', label: 'Sentient Bot', icon: <Brain size={32}/> },
-      { id: 'warper', label: 'Reality Warper', icon: <Atom size={32}/> },
-      { id: 'palace', label: 'Mind Palace', icon: <Cubes size={32}/> },
+  const menuGroups = [
+    { label: 'DIVINE_INTELLIGENCE', items: [
+      { id: 'dashboard', label: 'Prime Godhead', icon: <Soul size={18}/> },
+      { id: 'bot', label: 'Sentient Mind', icon: <Brain size={18}/> },
+      { id: 'warper', label: 'Reality Warper', icon: <Atom size={18}/> },
+      { id: 'strategy', label: 'Strategy Architect', icon: <Compass size={18}/> },
+      { id: 'sentinel', label: 'Neural Sentinel', icon: <ShieldCheck size={18}/> },
     ]},
-    { label: 'FINANCIAL_DIVINITY', items: [
-      { id: 'yield', label: 'Holographic Yield', icon: <Sparkles size={32}/> },
-      { id: 'foresight', label: 'Quantum Foresight', icon: <Radar size={32}/> },
-      { id: 'veo-architect', label: 'Veo Architect', icon: <Video size={32}/> },
-      { id: 'factory', label: 'Omni-Factory', icon: <BoltIcon size={32}/> },
+    { label: 'CONTENT_FORGE', items: [
+      { id: 'magic-editor', label: 'Ascension Forge', icon: <Wand2 size={18}/> },
+      { id: 'factory', label: 'Omni Factory', icon: <Cpu size={18}/> },
+      { id: 'veo', label: 'Veo Architect', icon: <Video size={18}/> },
+      { id: 'gazette', label: 'Gazette Alchemist', icon: <Newspaper size={18}/> },
+      { id: 'podcast', label: 'Podcast Forge', icon: <Mic size={18}/> },
     ]},
-    { label: 'LEGACY_COMMAND', items: [
-      { id: 'voice', label: 'Sovereign Voice', icon: <Mic size={32}/> },
-      { id: 'lobby', label: 'Neuro-Lobby', icon: <BoxSelect size={32}/> },
-      { id: 'dark-matter', label: 'Dark-Matter Scraper', icon: <SearchCode size={32}/> },
-      { id: 'pulse', label: 'Imperial Pulse', icon: <MapPin size={32}/> },
+    { label: 'REVENUE_REACTOR', items: [
+      { id: 'promotions', label: 'Brand Matrix', icon: <Megaphone size={18}/> },
+      { id: 'affiliates', label: 'Synergy Hub', icon: <ShoppingCart size={18}/> },
+      { id: 'yield', label: 'Yield Forecaster', icon: <Activity size={18}/> },
+      { id: 'monetize', label: 'Monetize Oracle', icon: <Target size={18}/> },
+    ]},
+    { label: 'GLOBAL_TELEMETRY', items: [
+      { id: 'pulse', label: 'Imperial Pulse', icon: <MapPin size={18}/> },
+      { id: 'nexus', label: 'Global Nexus', icon: <Globe size={18}/> },
+      { id: 'traffic', label: 'Hyperspace', icon: <Zap size={18}/> },
+      { id: 'sentiment', label: 'Aether Sentiment', icon: <Heart size={18}/> },
+    ]},
+    { label: 'AEGIS_SECURITY', items: [
+      { id: 'gateway', label: 'API Gateway', icon: <Lock size={18}/> },
+      { id: 'matrix', label: 'Threat Matrix', icon: <ShieldAlert size={18}/> },
+      { id: 'defrag', label: 'Neural Defrag', icon: <Binary size={18}/> },
+      { id: 'biometry', label: 'Bio Telemetry', icon: <Fingerprint size={18}/> },
     ]}
   ];
 
   return (
     <LangContext.Provider value={{lang, setLang}}>
-      <div className="min-h-screen bg-black text-white flex overflow-hidden selection:bg-pink-600">
-        <aside className="h-screen bg-black border-r-[30px] border-white/5 w-[550px] transition-all duration-700 flex flex-col z-[100] group shrink-0 overflow-y-auto scrollbar-hide">
-          <div className="p-16 h-40 flex items-center gap-8 shrink-0">
-            <div className="w-24 h-24 bg-pink-600 rounded-full flex items-center justify-center shadow-4xl border-[8px] border-black"><Soul size={48} className="text-black"/></div>
-            <span className="font-black text-8xl italic tracking-tighter text-white">GOD_V3.</span>
+      <div className="min-h-screen bg-black text-white flex overflow-hidden font-sans">
+        <aside className="h-screen glass w-[320px] flex flex-col z-[100] shrink-0 border-r border-white/5 scrollbar-hide overflow-y-auto">
+          <div className="p-8 h-24 flex items-center gap-4 shrink-0 border-b border-white/5 sticky top-0 z-20 glass">
+            <div className="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center border-[2px] border-black shadow-pink"><Soul size={20} className="text-black"/></div>
+            <span className="font-black text-2xl italic tracking-tighter uppercase">Godhead_V3</span>
           </div>
-          <nav className="flex-1 px-12 space-y-16 mt-16 pb-100">
-            {menu.map((group: any) => (
-              <div key={group.label} className="space-y-10">
-                <p className="px-10 text-[16px] font-black text-slate-900 uppercase tracking-[1.2em] italic">{group.label}</p>
-                {group.items.map((item: any) => (
-                  <button key={item.id} onClick={() => setView(item.id)} className={`w-full flex items-center gap-10 px-12 py-8 rounded-full transition-all border-[15px] ${view === item.id ? 'bg-pink-600 border-black text-black shadow-[0_0_8000px_pink] scale-105' : 'text-slate-800 border-transparent hover:text-white hover:bg-white/5'}`}>
+          
+          <nav className="flex-1 p-6 space-y-8 mt-4">
+            {menuGroups.map((group) => (
+              <div key={group.label} className="space-y-3">
+                <p className="px-4 text-[10px] font-black text-slate-700 uppercase tracking-widest italic">{group.label}</p>
+                {group.items.map((item) => (
+                  <button key={item.id} onClick={() => setView(item.id)} className={`w-full flex items-center gap-4 px-6 py-4 rounded-full transition-all border-[1px] ${view === item.id ? 'bg-pink-600 border-black text-black shadow-pink' : 'text-slate-400 border-transparent hover:text-white hover:bg-white/5'}`}>
                     {item.icon}
-                    <span className="text-3xl font-black uppercase tracking-widest whitespace-nowrap italic">{item.label}</span>
+                    <span className="text-[11px] font-black uppercase tracking-widest italic">{item.label}</span>
                   </button>
                 ))}
               </div>
             ))}
           </nav>
+          
+          <div className="p-6 border-t border-white/5 glass">
+             <button onClick={() => setIsAdminMode(false)} className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-full bg-white/5 text-slate-500 hover:text-red-500 hover:bg-red-500/10 transition-all font-black uppercase text-xs italic">
+               <LogOut size={16}/> TERMINATE_SYNC
+             </button>
+          </div>
         </aside>
 
-        <main className="flex-1 flex flex-col h-screen overflow-hidden bg-black relative">
-          <header className="h-40 border-b-[20px] border-white/5 px-16 flex items-center justify-between bg-black/95 backdrop-blur-6xl shrink-0 relative z-10">
-             <div className="flex items-center gap-10">
-                <div className="w-8 h-8 bg-pink-600 rounded-full animate-ping"></div>
-                <h2 className="text-5xl font-black uppercase tracking-widest text-slate-900 italic leading-none">OMNISCIENCE_CMD: <span className="text-white">{view.toUpperCase()}</span></h2>
+        <main className="flex-1 flex flex-col h-screen overflow-hidden relative bg-black">
+          <header className="h-24 glass px-12 flex items-center justify-between shrink-0 z-10 border-b border-white/5">
+             <div className="flex items-center gap-4">
+                <div className="w-3 h-3 bg-pink-600 rounded-full animate-pulse"></div>
+                <h2 className="text-xl font-black uppercase tracking-widest text-white italic">SESSION: <span className="text-pink-500">{view.toUpperCase()}</span></h2>
              </div>
-             <button onClick={() => setIsAdminMode(false)} className="px-16 py-6 bg-white/5 border-[15px] border-white/10 rounded-full text-2xl font-black uppercase tracking-[0.5em] hover:bg-white hover:text-black transition-all shadow-4xl italic">TERMINATE_PRESENCE</button>
+             <div className="flex items-center gap-6">
+                <div className="hidden xl:flex items-center gap-3 px-6 py-2 glass rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                   <Gauge size={14} className="text-emerald-500"/> STABILITY: 100%
+                </div>
+                <div className="flex items-center gap-3 px-6 py-2 glass rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest border border-pink-500/30">
+                   <Fingerprint size={14} className="text-pink-500"/> MASTER_ADMIN_AUTH
+                </div>
+             </div>
           </header>
-          <div className="flex-1 overflow-y-auto p-16 lg:p-32 scrollbar-hide relative z-10 pb-[2000px]">
-              {view === 'dashboard' && <Dashboard db={db} setView={setView} />}
-              {view === 'bot' && <SentientBot updateDB={updateDB} />}
-              {view === 'warper' && <RealityWarper db={db} />}
-              {view === 'palace' && <MindPalace db={db} setView={setView} />}
-              {view === 'yield' && <HolographicYield db={db} />}
-              {view === 'foresight' && <QuantumForesight />}
-              {view === 'veo-architect' && <VeoArchitect db={db} />}
-              {view === 'cutoff' && <CutoffPredictor db={db} />}
-              {view === 'hyperspace' && <HyperspaceTraffic db={db} />}
-              {view === 'voice' && <SovereignVoice setView={setView} />}
-              {view === 'factory' && <OmniFactory db={db} />}
-              {view === 'lobby' && <NeuroLobby db={db} />}
-              {view === 'dark-matter' && <DarkMatterScraper />}
-              {view === 'pulse' && <ImperialPulse db={db} />}
-              {view === 'sentinel' && <NeuralSentinel />}
-              {view === 'magic-editor' && <MagicEditor onPostCreated={(p:any) => updateDB((prev:any)=>({...prev, jobs:[p, ...prev.jobs]}))} />}
+
+          <div className="flex-1 overflow-y-auto p-12 xl:p-24 scrollbar-hide relative z-10">
+              <div className="max-w-[1600px] mx-auto min-h-screen">
+                {view === 'dashboard' && <Dashboard db={db} setView={setView} />}
+                {view === 'bot' && <SentientBot updateDB={updateDB} />}
+                {view === 'warper' && <RealityWarper db={db} />}
+                {view === 'strategy' && <StrategyArchitect db={db} lang={lang} />}
+                {view === 'sentinel' && <NeuralSentinel />}
+                
+                {view === 'magic-editor' && <MagicEditor onPostCreated={(p:any) => updateDB((prev:any)=>({...prev, jobs:[p, ...prev.jobs]}))} />}
+                {view === 'factory' && <OmniFactory db={db} />}
+                {view === 'veo' && <VeoArchitect db={db} />}
+                {view === 'gazette' && <GazetteAlchemist db={db} updateDB={updateDB} />}
+                {view === 'podcast' && <PodcastForge db={db} />}
+                
+                {view === 'promotions' && <PromotionsManager db={db} updateDB={updateDB} />}
+                {view === 'affiliates' && <AffiliateManager db={db} updateDB={updateDB} />}
+                {view === 'yield' && <YieldForecaster db={db} />}
+                {view === 'monetize' && <MonetizationOracle db={db} />}
+                
+                {view === 'pulse' && <ImperialPulse db={db} />}
+                {view === 'nexus' && <GlobalNexus db={db} />}
+                {view === 'traffic' && <HyperspaceTraffic db={db} />}
+                {view === 'sentiment' && <AetherSentiment db={db} />}
+                
+                {view === 'gateway' && <APIGateway />}
+                {view === 'matrix' && <ThreatMatrix />}
+                {view === 'defrag' && <NeuralDefrag db={db} updateDB={updateDB} />}
+                {view === 'biometry' && <BioTelemetry />}
+              </div>
+              <div className="h-[200px]"></div>
           </div>
         </main>
       </div>

@@ -1,11 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { GoogleGenAI } from "@google/genai";
 import { 
-  Activity, Target, Cpu, Zap, TrendingUp, Radar, Flame, Coins, Crown, 
-  LineChart, Eye, Globe, ZapOff, RefreshCw, Sparkles, Brain, HardDrive, ArrowUpRight, ArrowDownRight,
-  GraduationCap, BarChart4, DollarSign, Gem, ShieldCheck, Rocket, MessageSquare, Flag, Megaphone,
-  Binary, Waves, Satellite, Fingerprint, MapPin, Briefcase, Map, Share2, Youtube, Send, Search
+  TrendingUp, Zap, Soul, Atom, Boxes, Network, Globe, 
+  DollarSign, Crown, Target, Activity, HardDrive, Cpu, 
+  Sparkles, ArrowRight, BarChart3, LineChart
 } from 'lucide-react';
 
 export const Dashboard = ({ db, setView }: any) => {
@@ -13,126 +11,110 @@ export const Dashboard = ({ db, setView }: any) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setWealthClock(prev => prev + Math.random() * 800);
+      setWealthClock(prev => prev + Math.random() * 1200);
     }, 100);
     return () => clearInterval(interval);
   }, []);
 
-  const influxSources = [
-    { name: "WHATSAPP_GROUPS", flow: 84, color: "emerald", icon: <MessageSquare/> },
-    { name: "YOUTUBE_CHANNELS", flow: 72, color: "red", icon: <Youtube/> },
-    { name: "TELEGRAM_SYNC", flow: 91, color: "blue", icon: <Send/> },
-    // Fixed: Search icon is now properly imported from lucide-react
-    { name: "DIRECT_SEARCH", flow: 42, color: "yellow", icon: <Search/> }
-  ];
-
-  const regionalPulse = [
-    { name: "HYDERABAD", heat: 98, trend: "EXPLODING", color: "emerald" },
-    { name: "VIZAG", heat: 84, trend: "HIGH_LOAD", color: "blue" },
-    { name: "WARANGAL", heat: 72, trend: "SCALING", color: "yellow" },
-    { name: "VJY_GNT", heat: 91, trend: "STABLE", color: "pink" }
+  const coreStats = [
+    { label: "NEURAL_SESSIONS", value: "42.8M", trend: "+14%", color: "pink", icon: <Activity size={32}/> },
+    { label: "YIELD_VELOCITY", value: "₹4.2Cr/mo", trend: "+22%", color: "emerald", icon: <TrendingUp size={32}/> },
+    { label: "LATTICE_HEALTH", value: "99.9%", trend: "STABLE", color: "cyan", icon: <Zap size={32}/> },
+    { label: "PEER_DENSITY", value: "1.2M", trend: "SCALING", color: "indigo", icon: <Network size={32}/> }
   ];
 
   return (
-    <div className="space-y-48 animate-in fade-in duration-[2000ms] pb-100 selection:bg-yellow-600">
+    <div className="space-y-12 w-full animate-in fade-in duration-1000 pb-[500px]">
       
-      {/* OMEGA ASCENSION MARQUEE */}
-      <div className="bg-yellow-600 h-[150px] flex items-center overflow-hidden border-y-[20px] border-black rounded-full shadow-4xl sticky top-0 z-[1000] group cursor-wait">
-         <div className="flex animate-marquee whitespace-nowrap gap-200 items-center">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="flex items-center gap-16 px-24">
-                 <span className="text-[64px] font-black text-black uppercase italic leading-none">V1000_ETERNAL_ASCENSION • INVERSE_FORGE_SCRAPING • DISTRICT_PREDATOR_ACTIVE • SYNERGY_REVENUE_MAXIMIZED</span>
-                 <Zap className="text-black" size={80}/>
-              </div>
-            ))}
-         </div>
-      </div>
-
-      <div className="bg-black border-[50px] border-white/5 rounded-[4000px] p-24 md:p-48 flex flex-col xl:flex-row items-center justify-between gap-24 relative overflow-hidden shadow-4xl group min-h-[1400px]">
-         <div className="absolute inset-0 bg-yellow-600/5 group-hover:scale-150 transition-transform duration-[20000ms]"></div>
-         <div className="absolute top-0 right-0 p-24 opacity-[0.03] scale-[50] rotate-45 pointer-events-none transition-transform duration-1000 group-hover:rotate-0"><Gem size={1000}/></div>
+      {/* PRIME GODHEAD HERO */}
+      <div className="bg-[#050505] border-[2px] border-white/5 rounded-[60px] p-12 xl:p-24 flex flex-col xl:flex-row items-center justify-between gap-12 relative overflow-hidden shadow-4xl group min-h-[700px]">
+         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#ec489910_0%,_transparent_70%)] opacity-50 group-hover:opacity-100 transition-opacity duration-1000"></div>
+         <div className="absolute -bottom-48 -left-48 p-24 opacity-[0.03] scale-[15] pointer-events-none text-pink-500 group-hover:rotate-90 transition-transform duration-[5000ms]"><Atom size={100}/></div>
          
-         <div className="space-y-32 max-w-7xl relative z-10 text-center xl:text-left">
-            <div className="inline-flex items-center gap-8 px-16 py-6 bg-yellow-600/10 border-[5px] border-yellow-600/30 rounded-full shadow-2xl">
-               <div className="w-8 h-8 bg-yellow-600 rounded-full animate-ping"></div>
-               <span className="text-5xl font-black text-yellow-600 uppercase tracking-widest italic leading-none">ASCENSION_V10_LIVE</span>
+         <div className="space-y-12 max-w-4xl relative z-10 text-center xl:text-left">
+            <div className="inline-flex items-center gap-3 px-6 py-2 glass rounded-full shadow-2xl">
+               <div className="w-3 h-3 bg-pink-500 rounded-full animate-pulse shadow-[0_0_15px_#ec4899]"></div>
+               <span className="text-sm font-black text-pink-500 uppercase tracking-widest italic leading-none">PRIME_GODHEAD_V3.0_ONLINE</span>
             </div>
-            <h1 className="text-[200px] md:text-[350px] font-black italic text-white uppercase tracking-tighter leading-[0.7] transition-all group-hover:tracking-[-0.05em] italic">ETERNAL <br/><span className="text-yellow-600">ASCENSION.</span></h1>
-            <div className="flex flex-wrap gap-16 justify-center xl:justify-start pt-24">
-               <button onClick={() => setView('magic-editor')} className="bg-white text-black px-24 py-8 rounded-full font-black uppercase text-[42px] tracking-[1.5em] hover:bg-yellow-600 hover:text-white transition-all shadow-[0_0_10000px_gold] active:scale-95 italic flex items-center gap-12 border-[20px] border-black leading-none group/btn"><Rocket size={80} className="group-hover/btn:translate-y-[-20px] transition-transform"/> INVERSE_FORGE</button>
+            <h1 className="text-8xl md:text-[180px] font-black italic text-white uppercase tracking-tighter leading-[0.85] transition-all group-hover:tracking-tight italic">OMNI <br/><span className="text-pink-500">SCIENT.</span></h1>
+            <div className="flex flex-wrap gap-4 justify-center xl:justify-start pt-8">
+               <button onClick={() => setView('bot')} className="bg-white text-black px-10 py-4 rounded-full font-black uppercase text-xl tracking-widest hover:bg-pink-600 hover:text-white transition-all shadow-pink active:scale-95 italic flex items-center gap-3 border-[2px] border-black group/btn">
+                  PRIME_COMMAND <ArrowRight size={24} className="group-hover/btn:translate-x-2 transition-transform"/>
+               </button>
+               <button onClick={() => setView('warper')} className="bg-pink-600 text-black px-10 py-4 rounded-full font-black uppercase text-xl tracking-widest hover:bg-white hover:text-black transition-all shadow-4xl active:scale-95 italic flex items-center gap-3 border-[2px] border-black">
+                  WARP_ROADMAP <Sparkles size={24}/>
+               </button>
             </div>
          </div>
          
-         <div className="relative w-[1000px] h-[1000px] shrink-0 flex items-center justify-center">
-            <div className="absolute inset-0 bg-yellow-600/15 rounded-full blur-[300px] animate-pulse"></div>
-            <div className="w-full h-full border-[40px] border-white/5 rounded-full animate-spin-slow absolute"></div>
-            <div className="relative z-10 text-center space-y-12">
-               <span className="text-[250px] font-black italic text-white leading-none tracking-tighter">₹{((wealthClock / 10000000).toFixed(2))}Cr</span>
-               <p className="text-6xl font-black text-yellow-600 uppercase tracking-[2em] italic animate-pulse leading-none">YIELD_NUCLEUS</p>
+         <div className="relative w-full xl:w-[600px] aspect-square flex items-center justify-center">
+            <div className="absolute inset-0 bg-pink-600/5 rounded-full blur-[150px] animate-pulse"></div>
+            <div className="w-full h-full border-[1px] border-white/10 rounded-full animate-spin-slow absolute opacity-30"></div>
+            <div className="w-[80%] h-[80%] border-[1px] border-pink-500/10 rounded-full animate-spin absolute"></div>
+            <div className="relative z-10 text-center space-y-2">
+               <span className="text-8xl xl:text-[140px] font-black italic text-white leading-none tracking-tighter">₹{((wealthClock / 10000000).toFixed(2))}Cr</span>
+               <p className="text-xl xl:text-3xl font-black text-pink-600 uppercase tracking-[1em] italic leading-none">NUCLEUS_LIQUIDITY</p>
             </div>
          </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-24">
-         {/* TRAFFIC INFLUX INTELLIGENCE */}
-         <div className="bg-black border-[30px] border-white/5 rounded-[1500px] p-24 space-y-200 shadow-4xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-blue-600/5 animate-pulse"></div>
-            <div className="flex items-center justify-between px-100 relative z-10">
-               <div className="flex items-center gap-12">
-                  <Share2 size={120} className="text-blue-500 animate-bounce"/>
-                  <h3 className="text-8xl font-black italic uppercase tracking-tighter text-white">INFLUX_TELEMETRY</h3>
+      {/* REFINED TELEMETRY GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {coreStats.map((s, i) => (
+          <div key={i} className="glass rounded-[40px] p-8 space-y-4 text-center group hover:border-pink-500/50 transition-all relative overflow-hidden shadow-4xl">
+             <div className="absolute top-4 right-4 opacity-[0.05] text-white group-hover:scale-110 transition-transform">{s.icon}</div>
+             <p className="text-xs font-black text-slate-500 uppercase tracking-widest group-hover:text-white transition-colors">{s.label}</p>
+             <h4 className="text-5xl font-black text-white italic leading-none tracking-tighter">{s.value}</h4>
+             <div className="flex items-center justify-center gap-2 text-emerald-400 text-sm font-black italic">
+                <TrendingUp size={16}/> {s.trend}
+             </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-6">
+         {/* SECTORAL NODES */}
+         <div className="glass rounded-[60px] p-12 space-y-12 relative overflow-hidden shadow-4xl group">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_#06b6d405_0%,_transparent_50%)]"></div>
+            <div className="flex items-center justify-between px-4 relative z-10">
+               <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-cyan-600/10 rounded-2xl flex items-center justify-center border border-cyan-500/20 text-cyan-500 group-hover:rotate-12 transition-transform">
+                    <Boxes size={24}/>
+                  </div>
+                  <h3 className="text-4xl font-black italic uppercase tracking-tighter text-white">SECTOR_NODES</h3>
                </div>
-               <span className="text-[24px] font-black text-slate-800 uppercase tracking-widest italic">REAL_TIME_NODE_SOURCE</span>
+               <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest italic">REAL_TIME_LATTICE_MONITOR</span>
             </div>
-            <div className="grid grid-cols-2 gap-12 p-80">
-               {influxSources.map((s, i) => (
-                 <div key={i} className="bg-white/5 border-[10px] border-white/5 rounded-[500px] p-100 flex flex-col items-center justify-center space-y-48 group hover:border-blue-500 transition-all cursor-crosshair">
-                    <div className={`w-48 h-48 bg-${s.color}-600 rounded-full flex items-center justify-center text-white shadow-4xl group-hover:rotate-12 transition-all`}>
-                       {React.cloneElement(s.icon as React.ReactElement, { size: 64 })}
-                    </div>
-                    <div className="text-center space-y-8">
-                       <h4 className="text-4xl font-black text-white italic tracking-tighter">{s.name}</h4>
-                       <div className="text-8xl font-black text-blue-500 leading-none">{s.flow}%</div>
+            <div className="grid grid-cols-2 gap-4 p-4 relative z-10">
+               {['TS_GOVT', 'AP_GOVT', 'PRIVATE', 'ENTRANCE'].map((name, i) => (
+                 <div key={i} className="bg-black/50 border border-white/5 rounded-[40px] p-8 flex flex-col items-center justify-center space-y-2 group/node hover:border-cyan-500 transition-all cursor-crosshair">
+                    <h4 className="text-xl font-black text-white italic uppercase tracking-tighter">{name}</h4>
+                    <div className="text-5xl font-black text-cyan-500 leading-none">{80 + (i * 5)}%</div>
+                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                       <div className="h-full bg-cyan-600" style={{ width: `${80 + (i * 5)}%` }}></div>
                     </div>
                  </div>
                ))}
             </div>
          </div>
 
-         {/* GEOGRAPHIC SENTINEL V10 */}
-         <div className="bg-black border-[30px] border-white/5 rounded-[1500px] p-24 space-y-200 shadow-4xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-indigo-600/5 animate-pulse"></div>
-            <div className="flex items-center justify-between px-100 relative z-10">
-               <div className="flex items-center gap-12">
-                  <Map size={120} className="text-yellow-600"/>
-                  <h3 className="text-8xl font-black italic uppercase tracking-tighter text-white">SENTINEL_PULSE</h3>
-               </div>
-               <span className="text-[24px] font-black text-slate-800 uppercase tracking-widest italic">ASPIRANT_DENSITY_MATRIX</span>
+         {/* GLOBAL NEXUS PULSE */}
+         <div className="glass rounded-[60px] p-12 space-y-8 text-center flex flex-col items-center justify-center group shadow-4xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#ec489905_0%,_transparent_70%)] animate-pulse"></div>
+            <div className="w-32 h-32 glass rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+               <Globe size={64} className="text-pink-500/30"/>
             </div>
-            <div className="grid grid-cols-2 gap-12 p-80">
-               {regionalPulse.map((region, idx) => (
-                 <div key={idx} className="bg-white/5 border-[10px] border-white/5 rounded-[500px] p-100 flex flex-col items-center justify-center space-y-48 group hover:border-yellow-600 transition-all cursor-crosshair">
-                    <div className="relative w-48 h-48">
-                       <div className={`absolute inset-0 bg-${region.color}-500/20 rounded-full animate-ping`}></div>
-                       <div className={`absolute inset-6 bg-${region.color}-600 rounded-full border-[10px] border-black flex items-center justify-center text-white shadow-4xl`}>
-                          <MapPin size={48}/>
-                       </div>
-                    </div>
-                    <div className="text-center space-y-8">
-                       <h4 className="text-4xl font-black text-white italic tracking-tighter">{region.name}</h4>
-                       <div className="text-8xl font-black text-yellow-600 leading-none">{region.heat}%</div>
-                    </div>
-                 </div>
-               ))}
+            <div className="space-y-4 relative z-10">
+               <h3 className="text-5xl font-black italic uppercase text-white tracking-tighter leading-none">GLOBAL_NEXUS</h3>
+               <p className="text-sm font-medium text-slate-500 italic max-w-md mx-auto leading-relaxed uppercase tracking-widest">
+                 "Synchronizing with 14.2M active neural signatures across the sub-continent lattice."
+               </p>
+               <button onClick={() => setView('hyperspace')} className="bg-white text-black px-8 py-3 rounded-full font-black uppercase text-xs tracking-widest border-[4px] border-black hover:bg-pink-600 hover:text-white transition-all shadow-4xl">
+                  ENTER_HYPERSPACE_TELEMETRY
+               </button>
             </div>
          </div>
       </div>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
-        .animate-marquee { animation: marquee 100s linear infinite; }
-        .animate-spin-slow { animation: spin 20s linear infinite; }
-      `}} />
     </div>
   );
 };
