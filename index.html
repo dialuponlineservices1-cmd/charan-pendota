@@ -3,8 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dialup - Empire V1800</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Student Dialup - Legacy V2000</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -13,7 +13,11 @@
             colors: {
               emerald: { 500: '#10b981', 600: '#059669' },
               obsidian: '#020202',
-              dark: '#080808'
+              crimson: '#e11d48',
+              indigo: { 500: '#6366f1', 600: '#4f46e5' }
+            },
+            boxShadow: {
+              '4xl': '0 35px 60px -15px rgba(0, 0, 0, 0.5)',
             }
           }
         }
@@ -36,16 +40,16 @@
       @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap');
       body { 
         font-family: 'Plus Jakarta Sans', sans-serif; 
-        background-color: #020202; 
+        background: #020202; 
         color: white;
         margin: 0;
-        overflow-x: hidden;
+        -webkit-tap-highlight-color: transparent;
       }
       .scrollbar-hide::-webkit-scrollbar { display: none; }
-      #root { min-height: 100vh; }
+      .perspective-1000 { perspective: 1000px; }
     </style>
 </head>
-<body class="bg-obsidian">
+<body class="bg-obsidian antialiased overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>
