@@ -6,7 +6,7 @@ import {
   Sparkles, Newspaper, MapPin, Zap, Cpu, Settings, 
   LogOut, UserCircle, Hexagon, ShieldCheck, Megaphone, 
   ShoppingBag, FolderLock, MessageSquare, Flame, Swords, Ghost,
-  Compass, Target, Radio, Layers
+  Compass, Target, Radio, Layers, Terminal
 } from 'lucide-react';
 
 // Advanced Modular Nodes
@@ -31,13 +31,32 @@ export const LangContext = createContext<{lang: 'en' | 'te', setLang: (l: 'en' |
 const getInitialDB = () => {
   const data = localStorage.getItem(DB_KEY);
   if (data) return JSON.parse(data);
+  
+  // High-End Initial Data for "Advanced" Look
   return { 
-    jobs: [], internships: [], walkins: [], schemes: [], 
-    hallTickets: [], results: [], materials: [], news: [], exams: [],
-    promotions: [], products: [],
-    ticker: "SUPREMACY V2500 • MONETIZATION ACTIVE • ALL NODES SYNCED • REVENUE MAXIMIZED",
-    analytics: { activeNow: 24500, revenue: 1250000, serviceApplications: 840, storeSales: 4100 }, 
-    contactInfo: { whatsapp: "+91", adminKey: "8888" }
+    jobs: [
+      { id: 1, title: "TSPSC Group 1 Notification 2025", org: "TSPSC", lastDate: "2025-05-12", summary: "High-tier administrative roles for Telangana state. Apply now for executive positions.", thumbnail: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1000" },
+      { id: 2, title: "Railway Recruitment Board (RRB) NTPC", org: "Railways", lastDate: "2025-06-20", summary: "Central government opportunity for 10,000+ vacancies across India.", thumbnail: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=1000" }
+    ], 
+    internships: [], 
+    walkins: [], 
+    schemes: [
+      { id: 3, title: "Narayana Educational Support", org: "Govt", lastDate: "Open", summary: "Financial aid for meritorious students in rural areas.", thumbnail: "https://images.unsplash.com/photo-1523050335392-93851179ae22?q=80&w=1000" }
+    ], 
+    hallTickets: [], 
+    results: [], 
+    materials: [], 
+    news: [], 
+    exams: [],
+    promotions: [
+      { id: 'p1', brandName: 'SUPERMAN STUDY KITS', bannerUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1000', link: '#', revenue: '50000', isGlobal: true }
+    ], 
+    products: [
+      { id: 101, name: "Mastery PDF Bundle", price: "499", type: "Premium Bundle", image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=1000", sales: 1240 }
+    ],
+    ticker: "SUPREMACY V2500 • MONETIZATION ACTIVE • ALL NODES SYNCED • REVENUE MAXIMIZED • JOIN 24K+ ASPIRANTS",
+    analytics: { activeNow: 24580, revenue: 1250000, serviceApplications: 840, storeSales: 4100 }, 
+    contactInfo: { whatsapp: "9100000000", adminKey: "8888" }
   };
 };
 
@@ -48,14 +67,45 @@ const App = () => {
   const [adminPass, setAdminPass] = useState('');
   const [view, setView] = useState('dashboard');
   const [db, setDb] = useState(getInitialDB());
+  const [isBooting, setIsBooting] = useState(true);
 
-  useEffect(() => { localStorage.setItem(DB_KEY, JSON.stringify(db)); }, [db]);
+  useEffect(() => {
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+  }, [db]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsBooting(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   const updateDB = (updater: (prev: any) => any) => setDb((prev: any) => updater(prev));
 
   const handleAdminAuth = () => {
     if (adminPass === db.contactInfo.adminKey) setIsAuthenticated(true);
     else alert("Access Denied. Integrity check failed.");
   };
+
+  if (isBooting) {
+    return (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center p-10 space-y-8">
+         <div className="w-20 h-20 bg-red-600 rounded-[30px] flex items-center justify-center animate-spin-slow shadow-[0_0_60px_rgba(220,38,38,0.5)]">
+            <Hexagon size={40} className="text-white"/>
+         </div>
+         <div className="text-center space-y-2">
+            <h2 className="text-3xl font-black italic tracking-tighter text-white">SUPREMACY.OS</h2>
+            <div className="flex gap-1 justify-center">
+               <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce"></div>
+               <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+               <div className="w-1.5 h-1.5 bg-red-600 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+            </div>
+         </div>
+         <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            .animate-spin-slow { animation: spin-slow 4s linear infinite; }
+         `}} />
+      </div>
+    );
+  }
 
   if (!isAdminMode) {
     return (
@@ -68,11 +118,17 @@ const App = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center p-6">
-        <div className="w-full max-w-md bg-[#080808] border border-white/5 rounded-[60px] p-20 text-center space-y-12 shadow-4xl">
-           <div className="w-24 h-24 bg-red-600 rounded-[40px] mx-auto flex items-center justify-center shadow-2xl animate-pulse"><Cpu size={48}/></div>
-           <h2 className="text-5xl font-black italic tracking-tighter text-white uppercase leading-none">SUPREMACY <span className="text-red-500 text-7xl">.</span></h2>
-           <input type="password" title="Access Key" className="w-full bg-black border border-white/10 rounded-3xl px-10 py-7 text-white font-black text-center text-4xl outline-none focus:border-red-500 transition-all" placeholder="DECRYPT KEY" value={adminPass} onChange={e => setAdminPass(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAdminAuth()}/>
-           <button onClick={handleAdminAuth} className="w-full bg-red-600 text-white py-6 rounded-3xl font-black uppercase tracking-[0.5em] text-[10px] hover:bg-white hover:text-black transition-all">DECODE COMMAND</button>
+        <div className="w-full max-w-md bg-[#080808] border border-white/5 rounded-[60px] p-16 text-center space-y-12 shadow-4xl relative overflow-hidden">
+           <div className="absolute top-0 right-0 p-10 opacity-5"><ShieldCheck size={100}/></div>
+           <div className="w-24 h-24 bg-red-600 rounded-[40px] mx-auto flex items-center justify-center shadow-2xl animate-pulse relative z-10"><Cpu size={48}/></div>
+           <div className="space-y-2 relative z-10">
+              <h2 className="text-5xl font-black italic tracking-tighter text-white uppercase leading-none">COMMAND <span className="text-red-500">CENTRAL</span></h2>
+              <p className="text-[9px] font-black text-slate-700 uppercase tracking-[0.4em]">Aspiration Registry Management</p>
+           </div>
+           <div className="space-y-4 relative z-10">
+              <input type="password" title="Access Key" className="w-full bg-black border border-white/10 rounded-3xl px-10 py-7 text-white font-black text-center text-4xl outline-none focus:border-red-500 transition-all shadow-inner" placeholder="••••" value={adminPass} onChange={e => setAdminPass(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleAdminAuth()}/>
+              <button onClick={handleAdminAuth} className="w-full bg-red-600 text-white py-6 rounded-3xl font-black uppercase tracking-[0.5em] text-[10px] hover:bg-white hover:text-black transition-all shadow-4xl">INITIATE DECRYPT</button>
+           </div>
         </div>
       </div>
     );
@@ -156,8 +212,8 @@ const App = () => {
                 <h2 className="text-[11px] font-black uppercase tracking-[0.6em] text-slate-500 italic">SYSTEM_NODE: <span className="text-white">{view.toUpperCase()}</span></h2>
              </div>
              <div className="flex items-center gap-10">
-                <button onClick={() => setIsAdminMode(false)} className="px-10 py-4 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all">LIVE PORTAL VIEW</button>
-                <div className="w-14 h-14 bg-white/5 rounded-3xl flex items-center justify-center border border-white/10 shadow-xl"><UserCircle size={32}/></div>
+                <button onClick={() => setIsAdminMode(false)} className="px-10 py-4 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all shadow-xl">LIVE PORTAL VIEW</button>
+                <div className="w-14 h-14 bg-white/5 rounded-3xl flex items-center justify-center border border-white/10 shadow-xl group cursor-pointer hover:border-red-500 transition-all"><UserCircle size={32}/></div>
              </div>
           </header>
           
