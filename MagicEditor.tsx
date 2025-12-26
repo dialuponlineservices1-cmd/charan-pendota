@@ -1,157 +1,162 @@
 
 import React, { useState } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
-import { PenTool, Terminal, RefreshCw, Zap, Database, ExternalLink, Sparkles, CheckCircle, Search, Layers, Command, Rocket } from 'lucide-react';
+import { Terminal, RefreshCw, Rocket, Zap, Link, ShieldCheck, Sparkles, CheckCircle, Database, Globe, Languages, SearchCode, Table } from 'lucide-react';
 
-export const MagicEditor = ({ onPostCreated, setIsAiLoading, isAiLoading }: any) => {
-  const [mode, setMode] = useState<'scan' | 'prompt'>('scan');
-  const [input, setInput] = useState('');
+export const MagicEditor = ({ onPostCreated }: any) => {
+  const [url, setUrl] = useState('');
+  const [loading, setLoading] = useState(false);
   const [extractedPost, setExtractedPost] = useState<any>(null);
 
-  const handleForge = async () => {
-    if (!input) return;
-    setIsAiLoading(true);
+  const forgeNode = async () => {
+    if (!url) return;
+    setLoading(true);
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = mode === 'scan' 
-        ? `Analyze the job announcement at this URI: ${input}. 
-           Return strictly in JSON format with these exact keys: 
-           title, org, qualification, lastDate, location, category, summary, fullContent, competition, salaryRange, matchScore.`
-        : `Create a professional job notification based on this request: ${input}. 
-           Be creative but professional. Return strictly in JSON format with these keys: 
-           title, org, qualification, lastDate, location, category, summary, fullContent, competition, salaryRange, matchScore. 
-           Competition should be 'High', 'Medium' or 'Low'. matchScore should be a number 1-100.`;
-
+      // Using gemini-3-pro-preview for deep structural analysis
       const response = await ai.models.generateContent({
         model: 'gemini-3-pro-preview',
-        contents: prompt,
+        contents: `DEEP ANALYZE this job URL: ${url}. 
+        Return a perfect structured JSON notification in BOTH English and Formal Telugu.
+        Include eligibility, vacancies, and a high-CTR SEO package.
+        
+        REQUIRED JSON SCHEMA:
+        {
+          "title_en": "Global English Title",
+          "title_te": "Native Telugu Title",
+          "org": "Organization Name",
+          "lastDate": "YYYY-MM-DD",
+          "summary_en": "Professional summary with 3 bullet points",
+          "summary_te": "ప్రొఫెషనల్ తెలుగు సమ్మరీ",
+          "thumbnail": "High-quality career image URL",
+          "link": "Original URL",
+          "seo": { "keywords": "comma separated keywords", "description": "Meta description for SEO" },
+          "tables": [ { "label": "Key", "value": "Value", "color": "emerald/red/indigo/amber" } ]
+        }`,
         config: { 
+          thinkingConfig: { thinkingBudget: 25000 },
           responseMimeType: "application/json",
           responseSchema: {
             type: Type.OBJECT,
             properties: {
-              title: { type: Type.STRING },
+              title_en: { type: Type.STRING },
+              title_te: { type: Type.STRING },
               org: { type: Type.STRING },
-              qualification: { type: Type.STRING },
               lastDate: { type: Type.STRING },
-              location: { type: Type.STRING },
-              category: { type: Type.STRING },
-              summary: { type: Type.STRING },
-              fullContent: { type: Type.STRING },
-              competition: { type: Type.STRING },
-              salaryRange: { type: Type.STRING },
-              matchScore: { type: Type.NUMBER }
+              summary_en: { type: Type.STRING },
+              summary_te: { type: Type.STRING },
+              thumbnail: { type: Type.STRING },
+              link: { type: Type.STRING },
+              seo: {
+                type: Type.OBJECT,
+                properties: {
+                  keywords: { type: Type.STRING },
+                  description: { type: Type.STRING }
+                }
+              },
+              tables: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    label: { type: Type.STRING },
+                    value: { type: Type.STRING },
+                    color: { type: Type.STRING }
+                  }
+                }
+              }
             }
           }
         }
       });
-      
-      const resData = JSON.parse(response.text);
-      setExtractedPost(resData);
+      const data = JSON.parse(response.text);
+      setExtractedPost({ ...data, id: Date.now() });
     } catch (e) {
-      alert("AI Neural Forge failed. Connection unstable.");
+      alert("Neural SEO Forge failed. Bridge offline or URL protected.");
     } finally {
-      setIsAiLoading(false);
+      setLoading(false);
     }
   };
 
   const commitPost = () => {
     onPostCreated(extractedPost);
     setExtractedPost(null);
-    setInput('');
+    setUrl('');
+    alert("GLOBAL ZENITH SYNC: Node is now trending in the Registry.");
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-16 animate-in fade-in duration-700">
+    <div className="max-w-[1700px] mx-auto space-y-32 animate-in fade-in duration-1000 pb-[600px]">
       
-      {/* HEADER SECTION */}
-      <div className="flex flex-col md:flex-row items-center justify-between border-b border-white/5 pb-16 gap-8">
-        <div className="space-y-4">
-          <h2 className="text-8xl font-black tracking-tighter text-white uppercase italic leading-none">AI <span className="text-indigo-500">FORGE.</span></h2>
-          <p className="text-[11px] font-black uppercase text-slate-600 tracking-[0.7em]">Neural Asset Generation Module</p>
+      <div className="flex flex-col md:flex-row items-center justify-between border-b border-white/5 pb-24 gap-16">
+        <div className="space-y-10">
+          <h2 className="text-9xl font-black tracking-tighter text-white uppercase italic leading-[0.75]">SEO <span className="text-red-600">FORGE.</span></h2>
+          <p className="text-[16px] font-black uppercase text-slate-700 tracking-[2em] italic">Automated Bilingual Registry Synthesis Engine</p>
         </div>
-        <div className="bg-white/5 p-2 rounded-[32px] border border-white/10 flex gap-2 shadow-2xl">
-          <button onClick={() => setMode('scan')} className={`px-10 py-4 rounded-[24px] text-[10px] font-black uppercase tracking-widest transition-all ${mode === 'scan' ? 'bg-indigo-600 text-white shadow-xl' : 'text-slate-500 hover:text-white'}`}>Scan URI</button>
-          <button onClick={() => setMode('prompt')} className={`px-10 py-4 rounded-[24px] text-[10px] font-black uppercase tracking-widest transition-all ${mode === 'prompt' ? 'bg-indigo-600 text-white shadow-xl' : 'text-slate-500 hover:text-white'}`}>Neural Prompt</button>
+        <div className="flex gap-8">
+           <div className="px-12 py-5 bg-red-600/10 border border-red-600/20 rounded-full text-red-500 text-[12px] font-black uppercase tracking-widest flex items-center gap-5 animate-pulse"><SearchCode size={24}/> SEO_MASTER_ACTIVE</div>
         </div>
       </div>
 
-      <div className="grid gap-12">
-        {/* INPUT TERMINAL */}
-        <div className="bg-slate-950/40 border border-white/5 rounded-[64px] p-16 space-y-12 shadow-3xl group">
-          <div className="flex items-center gap-8">
-            <div className="w-20 h-20 bg-indigo-600 rounded-[32px] flex items-center justify-center shadow-2xl shadow-indigo-600/30 group-hover:rotate-12 transition-all"><Command className="text-white" size={36}/></div>
-            <div className="space-y-2">
-              <h3 className="text-3xl font-black text-white uppercase tracking-tighter italic">{mode === 'scan' ? 'URI Ingestion Protocol' : 'Neural Prompt Engineering'}</h3>
-              <p className="text-[10px] font-black text-slate-700 uppercase tracking-widest">{mode === 'scan' ? 'Scan external nodes for registry inclusion' : 'Command the AI to synthesize custom content'}</p>
-            </div>
-          </div>
-          
-          <div className="relative group">
-            {mode === 'scan' ? (
-              <input 
-                className="w-full bg-black border border-white/10 rounded-[40px] px-14 py-12 text-2xl font-black text-white outline-none focus:border-indigo-600 focus:ring-8 focus:ring-indigo-600/10 transition-all placeholder:text-slate-900 shadow-inner"
-                placeholder="Paste notification URL..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-            ) : (
-              <textarea 
-                className="w-full bg-black border border-white/10 rounded-[40px] px-14 py-12 text-2xl font-black text-white outline-none focus:border-indigo-600 focus:ring-8 focus:ring-indigo-600/10 transition-all placeholder:text-slate-900 shadow-inner min-h-[200px]"
-                placeholder="Ex: Generate a high-paying Railway job for 2025 aspirants in AP..."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              />
-            )}
-            <button 
-              onClick={handleForge} 
-              disabled={isAiLoading || !input} 
-              className="absolute right-10 bottom-10 bg-indigo-600 text-white p-10 rounded-[32px] hover:bg-indigo-500 disabled:opacity-50 transition-all shadow-[0_20px_50px_rgba(79,70,229,0.5)] active:scale-90"
-            >
-              {isAiLoading ? <RefreshCw className="animate-spin" size={40}/> : <Rocket size={40}/>}
-            </button>
-          </div>
+      <div className="bg-[#050505] border border-white/5 rounded-[120px] p-36 space-y-24 shadow-4xl group relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-24 opacity-5 rotate-12 transition-transform group-hover:scale-125 duration-1000"><Terminal size={500}/></div>
+        <div className="flex items-center gap-16 relative z-10">
+           <div className="w-32 h-32 bg-red-600 rounded-[45px] flex items-center justify-center shadow-4xl group-hover:rotate-12 transition-all border-4 border-white/5"><Link size={64}/></div>
+           <div className="space-y-4">
+              <h3 className="text-7xl font-black text-white italic tracking-tighter uppercase leading-none">Universal Ingestion</h3>
+              <p className="text-2xl font-bold text-slate-800 uppercase tracking-[0.5em] italic">Paste the job URI to forge a global bilingual node with tables.</p>
+           </div>
         </div>
 
-        {/* RESULTS PANEL */}
-        {extractedPost && (
-          <div className="bg-slate-950/60 border border-indigo-500/20 bg-indigo-600/5 rounded-[80px] p-24 animate-in slide-in-from-top-20 duration-1000 space-y-20 shadow-3xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-600/5 blur-[120px] pointer-events-none"></div>
-            
-            <div className="flex flex-col xl:flex-row justify-between items-start gap-12 relative z-10">
-              <div className="flex items-center gap-8">
-                <Sparkles className="text-indigo-500 animate-pulse" size={48}/>
-                <h4 className="text-6xl font-black text-white tracking-tighter uppercase italic">SYNTESIZED <span className="text-indigo-500">NODE.</span></h4>
+        <div className="relative z-10">
+           <input className="w-full bg-black border border-white/10 rounded-[100px] px-24 py-20 text-5xl font-black text-white outline-none focus:border-red-600 focus:ring-16 focus:ring-red-600/10 transition-all placeholder:text-slate-950 shadow-inner italic" placeholder="Paste URI (e.g. tspsc.gov.in/...)" value={url} onChange={e => setUrl(e.target.value)} onKeyDown={e => e.key === 'Enter' && forgeNode()} />
+           <button onClick={forgeNode} disabled={loading || !url} className="absolute right-16 top-1/2 -translate-y-1/2 bg-red-600 text-white p-14 rounded-full hover:bg-white hover:text-black transition-all shadow-4xl disabled:opacity-30 active:scale-90">
+             {loading ? <RefreshCw className="animate-spin" size={64}/> : <Rocket size={64}/>}
+           </button>
+        </div>
+      </div>
+
+      {extractedPost && (
+        <div className="bg-[#050505] border border-red-600/40 rounded-[150px] p-40 animate-in slide-in-from-top-40 duration-1000 space-y-32 shadow-4xl relative overflow-hidden">
+           <div className="absolute top-0 right-0 p-24 opacity-5 scale-[4] rotate-12"><Sparkles size={600}/></div>
+           <div className="flex justify-between items-center relative z-10">
+              <h4 className="text-8xl font-black text-white italic tracking-tighter uppercase">ZENITH <span className="text-red-500">FORGED NODE</span></h4>
+              <button onClick={commitPost} className="px-32 py-12 bg-white text-black rounded-full font-black uppercase text-[18px] tracking-widest hover:bg-red-600 hover:text-white transition-all shadow-4xl flex items-center gap-8 active:scale-95 italic"><CheckCircle size={40}/> COMMIT SYNC</button>
+           </div>
+           
+           <div className="grid lg:grid-cols-2 gap-32 relative z-10">
+              <div className="h-[800px] rounded-[110px] overflow-hidden border border-white/10 shadow-inner relative group">
+                 <img src={extractedPost.thumbnail} className="w-full h-full object-cover opacity-80 group-hover:scale-125 transition-transform duration-1000" alt="Thumbnail Preview" />
+                 <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
               </div>
-              <button onClick={commitPost} className="px-16 py-8 bg-white text-black rounded-[40px] text-sm font-black uppercase tracking-[0.3em] flex items-center gap-6 shadow-[0_30px_60px_rgba(255,255,255,0.1)] hover:bg-indigo-600 hover:text-white transition-all active:scale-95"><CheckCircle size={28}/> COMMIT TO REGISTRY</button>
-            </div>
-            
-            <div className="grid xl:grid-cols-3 gap-10 relative z-10">
-              {[
-                { l: 'Title Node', v: extractedPost.title },
-                { l: 'Organization', v: extractedPost.org },
-                { l: 'Qualifications', v: extractedPost.qualification },
-                { l: 'Deadline', v: extractedPost.lastDate },
-                { l: 'Salary Est.', v: extractedPost.salaryRange },
-                { l: 'Category', v: extractedPost.category }
-              ].map(item => (
-                <div key={item.l} className="space-y-4 p-10 bg-black border border-white/5 rounded-[48px] hover:border-indigo-500/30 transition-all shadow-xl">
-                  <p className="text-[10px] font-black uppercase text-indigo-500 tracking-[0.6em]">{item.l}</p>
-                  <p className="text-2xl font-black text-white leading-tight italic uppercase">{item.v}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="p-16 bg-black border border-white/5 rounded-[64px] space-y-8 relative z-10 shadow-inner">
-               <div className="flex justify-between items-center">
-                 <p className="text-[10px] font-black uppercase text-slate-700 tracking-[0.6em]">Neural Summary Narrative</p>
-                 <span className="px-6 py-2 bg-indigo-600/10 text-indigo-500 rounded-full text-[10px] font-black uppercase border border-indigo-600/20">Trust Score: {extractedPost.matchScore}%</span>
-               </div>
-               <p className="text-4xl font-black italic leading-[1.2] text-slate-300">"{extractedPost.summary}"</p>
-            </div>
-          </div>
-        )}
-      </div>
+              <div className="space-y-20 flex flex-col justify-center">
+                 <div className="space-y-10">
+                    <p className="text-[16px] font-black text-red-500 uppercase tracking-[0.8em] italic">ZENITH_METADATA_PACKAGE</p>
+                    <h3 className="text-7xl font-black text-white italic tracking-tighter uppercase leading-[0.85]">{extractedPost.title_te}</h3>
+                    <p className="text-4xl font-bold text-slate-500 italic">"{extractedPost.summary_en}"</p>
+                 </div>
+                 
+                 <div className="grid grid-cols-2 gap-16 pt-16 border-t border-white/5">
+                    <div>
+                       <p className="text-[14px] font-black text-slate-800 uppercase tracking-widest italic flex items-center gap-4"><Table size={16}/> Data Matrix</p>
+                       <div className="space-y-4 mt-6">
+                          {extractedPost.tables?.map((t:any, i:number) => (
+                             <div key={i} className="flex justify-between text-white font-black italic text-xl">
+                                <span className="text-slate-700">{t.label}:</span>
+                                <span>{t.value}</span>
+                             </div>
+                          ))}
+                       </div>
+                    </div>
+                    <div>
+                       <p className="text-[14px] font-black text-slate-800 uppercase tracking-widest italic flex items-center gap-4"><SearchCode size={16}/> SEO Nodes</p>
+                       <p className="text-xl font-bold text-slate-500 italic mt-6 break-words">{extractedPost.seo.keywords}</p>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+      )}
     </div>
   );
 };
