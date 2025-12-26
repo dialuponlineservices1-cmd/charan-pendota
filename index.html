@@ -4,44 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dialup - V1600 Supreme</title>
-    <!-- Tailwind CSS for Advanced Styling -->
+    <title>Student Dialup - V1700 TITAN</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              emerald: { 500: '#10b981', 600: '#059669' },
+              emerald: { 400: '#34d399', 500: '#10b981', 600: '#059669' },
+              obsidian: '#020202',
               slate: { 900: '#0f172a', 950: '#020617' }
-            },
-            animation: {
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             }
           }
         }
       }
     </script>
     <script type="importmap">
-    {
-      "imports": {
-        "lucide-react": "https://esm.sh/lucide-react@^0.474.0",
-        "react": "https://esm.sh/react@^19.0.0",
-        "react/": "https://esm.sh/react@^19.0.0/",
-        "@google/genai": "https://esm.sh/@google/genai@^0.21.0",
-        "react-dom": "https://esm.sh/react-dom@^19.0.0",
-        "react-dom/": "https://esm.sh/react-dom@^19.0.0/",
-        "react-dom/client": "https://esm.sh/react-dom@^19.0.0/client"
-      }
-    }
-    </script>
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.474.0",
+    "react": "https://esm.sh/react@^19.0.0",
+    "react/": "https://esm.sh/react@^19.0.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^0.21.0",
+    "react-dom": "https://esm.sh/react-dom@^19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@^19.0.0/client",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
-      body { font-family: 'Plus Jakarta Sans', sans-serif; }
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap');
+      body { 
+        font-family: 'Plus Jakarta Sans', sans-serif; 
+        background: #020202; 
+        color: white;
+        margin: 0;
+      }
       .scrollbar-hide::-webkit-scrollbar { display: none; }
+      #root { min-height: 100vh; display: flex; flex-direction: column; }
     </style>
 </head>
-<body class="bg-[#020202] m-0 overflow-x-hidden">
+<body class="bg-obsidian overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
 </body>
