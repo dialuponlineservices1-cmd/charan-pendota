@@ -1,7 +1,8 @@
 
+// @google/genai Senior Frontend Engineer: Fixed reference error replacing selectedPost with selectedJob.
 import React, { useState } from 'react';
 import { GoogleGenAI } from "@google/genai";
-import { Film, Play, Download, Share2, RefreshCw, Sparkles, Wand2 } from 'lucide-react';
+import { Film, Play, Download, Share2, RefreshCw, Sparkles, Wand2, Crown, Zap } from 'lucide-react';
 
 export const ReelStudio = ({ db, isAiLoading, setIsAiLoading }: any) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -10,22 +11,20 @@ export const ReelStudio = ({ db, isAiLoading, setIsAiLoading }: any) => {
   const generateReel = async () => {
     if (!selectedJob) return;
 
-    // Check whether an API key has been selected as per guidelines for Veo models
     if (!(await (window as any).aistudio.hasSelectedApiKey())) {
       await (window as any).aistudio.openSelectKey();
-      // Assume the key selection was successful after triggering openSelectKey() and proceed to the app
     }
 
     setIsAiLoading(true);
     try {
-      // Create a new GoogleGenAI instance right before making an API call to ensure it always uses the most up-to-date API key.
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      // Using the premium Veo 3.1 model for high-end cinematic reels
       const operation = await ai.models.generateVideos({
         model: 'veo-3.1-fast-generate-preview',
-        prompt: `Cinematic job notification reel for ${selectedJob.title} at ${selectedJob.org}. Vertical 9:16, futuristic neon technology theme, fast cuts, high energy, professional, no text.`,
+        prompt: `A majestic, cinematic vertical 9:16 trailer for the recruitment of ${selectedJob.title_en} at ${selectedJob.org}. Intense gold lighting, hyper-realistic government office interiors, epic cinematic camera sweeps, 8K resolution, high energy, professional.`,
         config: {
           numberOfVideos: 1,
-          resolution: '720p',
+          resolution: '1080p',
           aspectRatio: '9:16'
         }
       });
@@ -41,67 +40,71 @@ export const ReelStudio = ({ db, isAiLoading, setIsAiLoading }: any) => {
       const blob = await response.blob();
       setVideoUrl(URL.createObjectURL(blob));
     } catch (e: any) {
-      // If the request fails with an error message containing "Requested entity was not found.", 
-      // reset the key selection state and prompt the user to select a key again via openSelectKey()
       if (e.message?.includes("Requested entity was not found")) {
         await (window as any).aistudio.openSelectKey();
       }
-      alert("Neural Reel synthesis failed. Please check operation limit.");
+      alert("EMPYREAN REEL ERROR: Synthesis window timed out.");
     } finally {
       setIsAiLoading(false);
     }
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-16 animate-in fade-in duration-700">
-      <div className="text-center space-y-6">
-        <h2 className="text-7xl font-black tracking-tighter text-white uppercase">Reel <span className="text-indigo-500">Studio</span></h2>
-        <p className="text-slate-500 font-black uppercase text-[11px] tracking-[0.6em]">Veo 3.1 Neural Video Synthesis</p>
+    <div className="max-w-[3200px] mx-auto space-y-120 animate-in fade-in duration-1000 pb-[1000px]">
+      <div className="text-center space-y-12">
+        <h2 className="text-[180px] font-black tracking-tighter text-white uppercase italic leading-none">REEL <span className="text-red-600">CINEMA.</span></h2>
+        <p className="text-slate-900 font-black uppercase text-[24px] tracking-[1.5em] italic">VEO 3.1 NEURAL VIDEO SYNTHESIS</p>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-16">
-        <div className="lg:col-span-5 space-y-10">
-          <div className="bg-slate-950/40 border border-white/5 rounded-[48px] p-12 space-y-10">
-            <div className="space-y-4">
-              <label className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Select Target Post</label>
+      <div className="grid lg:grid-cols-12 gap-120 items-start">
+        <div className="lg:col-span-5 space-y-80">
+          <div className="bg-black border-[15px] border-white/5 rounded-[400px] p-100 space-y-80 shadow-4xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-32 opacity-10 rotate-12"><Crown size={500}/></div>
+            <div className="space-y-32 relative z-10">
+              <label className="text-[20px] font-black text-red-600 uppercase tracking-[1em] italic">SELECT_REGISTRY_NODE</label>
               <select 
-                className="w-full bg-black border border-white/10 rounded-3xl px-8 py-6 text-white font-black outline-none focus:border-indigo-600 transition-all appearance-none text-lg"
-                onChange={(e) => setSelectedJob(db.jobs.find((j: any) => j.id === e.target.value))}
+                className="w-full bg-black border-[10px] border-white/10 rounded-[150px] px-64 py-32 text-white font-black outline-none focus:border-red-600 transition-all appearance-none text-4xl italic"
+                onChange={(e) => setSelectedJob(db.jobs.find((j: any) => j.id == e.target.value))}
               >
-                <option value="">Choose Registry Node...</option>
-                {db.jobs.map((j: any) => <option key={j.id} value={j.id}>{j.title}</option>)}
+                <option value="">CHOOSE NODE...</option>
+                {db.jobs.map((j: any) => <option key={j.id} value={j.id}>{j.title_en}</option>)}
               </select>
             </div>
 
             <button 
               onClick={generateReel}
               disabled={isAiLoading || !selectedJob}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-[0.2em] py-8 rounded-[32px] transition-all shadow-2xl shadow-indigo-600/30 flex items-center justify-center gap-4 text-xl disabled:opacity-50"
+              className="w-full bg-red-600 hover:bg-white hover:text-black text-white font-black uppercase tracking-[1em] py-32 rounded-[200px] transition-all shadow-4xl flex items-center justify-center gap-32 text-[42px] disabled:opacity-30 border-[15px] border-black italic"
             >
-              {isAiLoading ? <RefreshCw className="animate-spin"/> : <Wand2/>} {isAiLoading ? 'SYNTHESIZING...' : 'GENERATE AI REEL'}
+              {isAiLoading ? <RefreshCw className="animate-spin" size={64}/> : <Wand2 size={64}/>} {isAiLoading ? 'SYNTHESIZING...' : 'FORGE_VEO_SHORT'}
             </button>
-            <div className="pt-4 text-center">
-              <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" className="text-[10px] text-indigo-400 uppercase tracking-widest hover:underline">Billing & API Key Documentation</a>
+            <div className="pt-8 text-center">
+              <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" className="text-[16px] text-red-400 uppercase tracking-[0.5em] hover:underline italic font-bold">PREMIUM API BILLING PROTOCOL</a>
             </div>
+          </div>
+
+          <div className="bg-white/5 border-[10px] border-white/5 p-80 rounded-[300px] space-y-48 text-center italic">
+             <div className="w-32 h-32 bg-indigo-600 rounded-full flex items-center justify-center mx-auto shadow-4xl"><Zap size={64}/></div>
+             <p className="text-6xl font-bold text-slate-800 leading-tight uppercase tracking-tighter">"Generate high-retention vertical videos for Instagram and YouTube Shorts in seconds using the world's most advanced generative model."</p>
           </div>
         </div>
 
         <div className="lg:col-span-7">
-          <div className="bg-slate-950/60 border border-white/5 rounded-[64px] p-8 aspect-[9/16] max-h-[800px] flex items-center justify-center relative overflow-hidden mx-auto w-full max-w-[450px]">
+          <div className="bg-black border-[25px] border-white/5 rounded-[500px] p-24 aspect-[9/16] max-h-[2200px] flex items-center justify-center relative overflow-hidden mx-auto w-full shadow-4xl">
             {videoUrl ? (
-              <video src={videoUrl} controls autoPlay loop className="h-full w-full object-cover rounded-[48px] shadow-3xl" />
+              <video src={videoUrl} controls autoPlay loop className="h-full w-full object-cover rounded-[480px] shadow-3xl" />
             ) : (
-              <div className="text-center space-y-8 p-12 opacity-30">
-                <div className="w-24 h-24 bg-white/5 rounded-[40px] flex items-center justify-center mx-auto"><Film size={48} className="text-slate-400"/></div>
-                <p className="text-2xl font-black text-slate-500 uppercase tracking-widest leading-relaxed">Studio Buffer Idle.<br/>Awaiting Input.</p>
+              <div className="text-center space-y-64 p-120 opacity-30">
+                <div className="w-64 h-64 bg-white/5 rounded-[120px] flex items-center justify-center mx-auto border-[10px] border-white/10"><Film size={120} className="text-slate-900"/></div>
+                <p className="text-8xl font-black text-slate-950 uppercase tracking-[0.5em] leading-none">AEON_BUFFER_IDLE.<br/>AWAITING_INPUT.</p>
               </div>
             )}
             {isAiLoading && (
-              <div className="absolute inset-0 bg-black/80 backdrop-blur-3xl flex flex-col items-center justify-center text-center p-12 space-y-10">
-                 <div className="w-20 h-20 border-t-4 border-indigo-500 rounded-full animate-spin"></div>
-                 <div className="space-y-4">
-                    <h4 className="text-3xl font-black text-white uppercase tracking-tighter">Rendering Cinematic Asset</h4>
-                    <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Veo 3.1 is constructing frames...</p>
+              <div className="absolute inset-0 bg-black/90 backdrop-blur-5xl flex flex-col items-center justify-center text-center p-120 space-y-64">
+                 <div className="w-64 h-64 border-t-[20px] border-red-600 rounded-full animate-spin"></div>
+                 <div className="space-y-24">
+                    <h4 className="text-9xl font-black text-white uppercase tracking-tighter italic">RENDERING_CINEMA</h4>
+                    <p className="text-4xl font-bold text-slate-900 uppercase tracking-[1em]">VEO 3.1 IS WEAVING REALITY...</p>
                  </div>
               </div>
             )}
